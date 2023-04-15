@@ -40,9 +40,7 @@
 					<div class="form-group col-md-2">
 						<label for="inputSetor">Setor</label>
 						<select id="inputSetor" class="form-control">
-							<!-- Utilizar o v-for="" -->
-						<option selected>Setor...</option>
-						<option>...</option>
+						<option v-for="setor in serores"> {{ setor.nome }} </option>
 					</select>
 				</div>
 			</div>

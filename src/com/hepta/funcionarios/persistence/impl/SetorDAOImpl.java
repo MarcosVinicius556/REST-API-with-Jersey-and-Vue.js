@@ -1,4 +1,4 @@
-package com.hepta.funcionarios.persistence;
+package com.hepta.funcionarios.persistence.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,16 +6,24 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import com.hepta.funcionarios.entity.Funcionario;
+import com.hepta.funcionarios.entity.Setor;
+import com.hepta.funcionarios.persistence.HibernateUtil;
+import com.hepta.funcionarios.persistence.interfaces.SetorDAO;
 
-public class FuncionarioDAO {
-    
+/**
+ * 
+ * @author marcos
+ * @apiNote Implementações dos métodos 
+ * 			definidos na interface DAO do objeto
+ *
+ */
+public class SetorDAOImpl implements SetorDAO {
 
-	public void save(Funcionario funcionario) throws Exception {
+	public void save(Setor setor) throws Exception {
 		EntityManager em = HibernateUtil.getEntityManager();
 		try {
 			em.getTransaction().begin();
-			em.persist(funcionario);
+			em.persist(setor);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
@@ -25,12 +33,12 @@ public class FuncionarioDAO {
 		}
 	}
 
-	public Funcionario update(Funcionario funcionario) throws Exception {
+	public Setor update(Setor setor) throws Exception {
 		EntityManager em = HibernateUtil.getEntityManager();
-		Funcionario funcionarioAtualizado = null;
+		Setor setorAtualizado = null;
 		try {
 			em.getTransaction().begin();
-			funcionarioAtualizado = em.merge(funcionario);
+			setorAtualizado = em.merge(setor);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
@@ -38,15 +46,15 @@ public class FuncionarioDAO {
 		} finally {
 			em.close();
 		}
-		return funcionarioAtualizado;
+		return setorAtualizado;
 	}
 
 	public void delete(Integer id) throws Exception {
 		EntityManager em = HibernateUtil.getEntityManager();
 		try {
 			em.getTransaction().begin();
-			Funcionario Funcionario = em.find(Funcionario.class, id);
-			em.remove(Funcionario);
+			Setor setor = em.find(Setor.class, id);
+			em.remove(setor);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
@@ -57,34 +65,34 @@ public class FuncionarioDAO {
 
 	}
 
-	public Funcionario find(Integer id) throws Exception {
+	public Setor find(Integer id) throws Exception {
 		EntityManager em = HibernateUtil.getEntityManager();
-		Funcionario Funcionario = null;
+		Setor setor = null;
 		try {
-			Funcionario = em.find(Funcionario.class, id);
+			setor = em.find(Setor.class, id);
 		} catch (Exception e) {
 			em.getTransaction().rollback();
 			throw new Exception(e);
 		} finally {
 			em.close();
 		}
-		return Funcionario;
+		return setor;
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Funcionario> getAll() throws Exception {
+	public List<Setor> getAll() throws Exception {
 		EntityManager em = HibernateUtil.getEntityManager();
-		List<Funcionario> Funcionarios = new ArrayList<>();
+		List<Setor> setores = new ArrayList<>();
 		try {
 			Query query = em.createQuery("FROM Funcionario f join fetch f.setor ");
-			Funcionarios = query.getResultList();
+			setores = query.getResultList();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
 			throw new Exception(e);
 		} finally {
 			em.close();
 		}
-		return Funcionarios;
+		return setores;
 	}
-
+	
 }

@@ -6,15 +6,34 @@ var app = new Vue({
             idade: '',
             salario: '',
             email: '',
-            setor: ''
-        }
-    },
-    created(){
+            setor: {}
+        },
+        setores: []
 
     },
+    created: function(){
+        let vm = this;
+        vm.buscaSetores();
+    },
     methods:{
-        enviaCadastro: function(cadastro){
-            alert('Enviando cadastro');
-        }
+        buscaSetores: function(){
+            const vm = this;
+            axios.get("/funcionarios/rest/setores/listar")
+                 .then(response => {
+                    vm.setores = response.data;
+                 })
+                 .catch(error => {
+                    vm.mostraAlertaErro("Erro interno", error);  
+                 });
+        },
+        enviaCadastro: function(){
+            const vm = this;
+            axios.post("/funcionarios/rest/funcionarios/salvar")
+                 .body(vm.funcionario);    
+        },
+		mostraAlertaErro: function(error, mensagem){
+			console.log(error);
+			alert(mensagem);
+		}
     }
 });

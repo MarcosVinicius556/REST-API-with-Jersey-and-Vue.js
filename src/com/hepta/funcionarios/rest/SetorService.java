@@ -16,34 +16,33 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.hepta.funcionarios.entity.Funcionario;
+import com.hepta.funcionarios.entity.Setor;
 import com.hepta.funcionarios.persistence.factory.DAOFactory;
-import com.hepta.funcionarios.persistence.interfaces.FuncionarioDAO;
+import com.hepta.funcionarios.persistence.interfaces.SetorDAO;
 
-@Path("/funcionarios")
-public class FuncionarioService {
+@Path("/setores")
+public class SetorService {
 
-    private FuncionarioDAO dao;
+    private SetorDAO dao;
 
-    public FuncionarioService() {
-        dao = DAOFactory.createFuncionarioDAO();
+    public SetorService() {
+        dao = DAOFactory.createSetorDAOImpl();
     }
 
     /**
-     * Adiciona novo Funcionario
+     * Adiciona novo Setor
      * 
-     * @param Funcionario: Novo Funcionario
+     * @param Setor: Novo Setor
      * @return response 200 (OK) - Conseguiu adicionar
      */
     @Path("/salvar")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @POST
-    public Response funcionarioCreate(Funcionario funcionario) {
+    public Response setorCreate(Setor setor) {
         try {
-            dao.save(funcionario);
+            dao.save(setor); //Criar retorno de erro personalizado!
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -51,52 +50,52 @@ public class FuncionarioService {
     }
 
     /**
-     * Lista todos os Funcionarios
+     * Lista todos os Setores
      * 
      * @return response 200 (OK) - Conseguiu listar
      */
     @Path("/listar")
     @Produces(MediaType.APPLICATION_JSON)
     @GET
-    public Response funcionarioRead() {
-        List<Funcionario> funcionarios = new ArrayList<>();
+    public Response setorRead() {
+        List<Setor> setores = new ArrayList<>();
         try {
-            funcionarios = dao.getAll();
+            setores = dao.getAll();
         } catch (Exception e) {
             e.printStackTrace();
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao buscar Funcionarios").build();
         }
 
-        GenericEntity<List<Funcionario>> entity = new GenericEntity<List<Funcionario>>(funcionarios) {
+        GenericEntity<List<Setor>> entity = new GenericEntity<List<Setor>>(setores) {
         };
         return Response.status(Status.OK).entity(entity).build();
     }
 
     /**
-     * Atualiza um Funcionario
+     * Atualiza um Setor
      * 
-     * @param id:          id do Funcionario
-     * @param Funcionario: Funcionario atualizado
+     * @param id:          id do Setor
+     * @param Setor: Setor atualizado
      * @return response 200 (OK) - Conseguiu atualizar
      */
     @Path("/atualizar")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @PUT
-    public Response funcionarioUpdate(Funcionario funcionario) {
+    public Response setorUpdate(Setor setor) {
         return Response.status(Status.NOT_IMPLEMENTED).build();
     }
 
     /**
-     * Remove um Funcionario
+     * Remove um Setor
      * 
-     * @param id: id do funcionario
+     * @param id: id do Setor
      * @return response 200 (OK) - Conseguiu remover
      */
     @Path("/deletar/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @DELETE
-    public Response FuncionarioDelete(@PathParam("id") Integer id) {
+    public Response setorDelete(@PathParam("id") Integer id) {
         return Response.status(Status.NOT_IMPLEMENTED).build();
     }
 
@@ -109,7 +108,7 @@ public class FuncionarioService {
     @Produces(MediaType.TEXT_PLAIN)
     @GET
     public String testeJersey() {
-        return "REST Funcionario funcionando.";
+        return "REST Setor funcionando.";
     }
 
 }
