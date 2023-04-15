@@ -4,7 +4,10 @@
     box-sizing: border-box;
 }
 
-body{
+body h4 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    letter-spacing: 1px;
 }
 
 nav{
@@ -18,6 +21,13 @@ nav{
 nav a{
     color: #fff;
     font-size: 1.4rem;
+    transition: transform .3s;
+    text-decoration: none;
+}
+
+nav a:hover{
+    transform: scale(1.1);
+    text-decoration: none;
 }
 
 main{
@@ -28,5 +38,8 @@ main{
 
 #app{
     align-items: center;
+    align-self: center;
+    padding: 2rem;
     width: 80%;
+    max-width: 80rem;
 }

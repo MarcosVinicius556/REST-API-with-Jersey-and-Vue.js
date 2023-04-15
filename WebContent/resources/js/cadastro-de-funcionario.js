@@ -9,6 +9,9 @@ var app = new Vue({
             setor: ''
         }
     },
+    created(){
+
+    },
     methods:{
         enviaCadastro: function(cadastro){
             alert('Enviando cadastro');
