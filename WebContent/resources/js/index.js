@@ -21,6 +21,12 @@ var inicio = new Vue({
 		mostraAlertaErro: function(erro, mensagem){
 			console.log(erro);
 			alert(mensagem);
+		},
+		createFuncionario: function(){
+
+		},
+		updateFuncionario: function(id_funcionario){
+			alert(id_funcionario);
 		}
     }
 });

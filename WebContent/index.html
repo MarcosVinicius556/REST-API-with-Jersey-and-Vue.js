@@ -6,10 +6,8 @@
 <meta http-equiv="Cache-Control" content="no-store" />
 <link rel="shortcut icon" href="favicon.ico"/>
 <title>Funcionários - Início</title>
-<link rel="stylesheet" type="text/css"
-	href="resources/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css"
-	href="resources/css/bootstrap-vue.css">
+<link rel="stylesheet" type="text/css" href="resources/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="resources/css/bootstrap-vue.css">
 </head>
 
 <body>
@@ -17,6 +15,7 @@
 
 	<div id="inicio" class="container-fluid table" >
 		<h4>Lista dos Funcionários</h4>
+		<a href="./pages/novo-funcionario.html" class="btn btn-primary">Cadastrar</a>
 		<table>
 		  <tr>
 			<th>Nome</th>
@@ -34,7 +33,7 @@
 			  <td>{{ funcionario.salario }}</td> 
 			  <td>{{ funcionario.email }}</td> 
 			  <td>{{ funcionario.idade }}</td>
-			  <td><span @click="">&#9998;</span>
+			  <td><span @click="updateFuncionario(funcionario.id_funcionario)">&#9998;</span>
 				<span  @click="">&#10006;</span>
 			  </td>
 			</tr>

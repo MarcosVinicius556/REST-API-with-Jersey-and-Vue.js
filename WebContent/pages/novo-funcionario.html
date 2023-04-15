@@ -5,25 +5,71 @@
 	<meta charset="utf-8">
 	<link rel="shortcut icon" href="favicon.ico"/>
 	<title>Cadastrar um novo Funcionário </title>
-	<link rel="stylesheet" type="text/css"
-		href="resources/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css"
-		href="resources/css/main.css">
+	<link rel="stylesheet" type="text/css" href="../resources/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../resources/css/cadastro-funcionario.css">
 </head>
 
 <body>
 
-<a href="/funcionarios/index.html">Voltar</a>
+	<nav>
+		<a href="/funcionarios/index.html">Voltar</a>
+	</nav>
+	<main>
+		<div id="app">
+			
+			<h4>Cadastro de funcionário</h4>
+				
+			<form>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="inputNome">Nome</label>
+						<input type="text" class="form-control" id="inputNome" placeholder="Nome">
+					</div>
+					<!-- <div class="form-group col-md-6">
+					</div> -->
+				</div>
+				<div class="form-group">
+				<label for="inputPassword4">Password</label>
+				<input type="password" class="form-control" id="inputPassword4" placeholder="Password">
+				<label for="inputAddress">Address</label>
+				<input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+				</div>
+				<div class="form-group">
+				<label for="inputAddress2">Address 2</label>
+				<input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+				</div>
+				<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="inputCity">City</label>
+					<input type="text" class="form-control" id="inputCity">
+				</div>
+				<div class="form-group col-md-4">
+					<label for="inputState">State</label>
+					<select id="inputState" class="form-control">
+					<option selected>Choose...</option>
+					<option>...</option>
+					</select>
+				</div>
+				<div class="form-group col-md-2">
+					<label for="inputZip">Zip</label>
+					<input type="text" class="form-control" id="inputZip">
+				</div>
+				</div>
+				<div class="form-group">
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" id="gridCheck">
+					<label class="form-check-label" for="gridCheck">
+					Check me out
+					</label>
+				</div>
+				</div>
+				<button type="submit" class="btn btn-primary">Sign in</button>
+			</form>	
+		</div>
+	</main>
 
-<div id="app">
-	
-	<h4>Cadastro de funcionário</h4>
-		
-	<p>Implementar o cadastro de funcionários</p>	
-</div>
-
-	<script src="resources/js/vue.js"></script>
-	<script src="resources/js/axios.min.js"></script>
-	<script src="resources/js/cadastro-de-funcionario.js"></script>
+	<script src="../resources/js/vue.js"></script>
+	<script src="../resources/js/axios.min.js"></script>
+	<script src="../resources/js/cadastro-de-funcionario.js"></script>
 </body>
 </html>
