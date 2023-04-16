@@ -9,14 +9,15 @@ var inicio = new Vue({
     },
     methods:{
 	//Busca os itens para a lista da primeira página
-        listarFuncionarios: function(){
+        listarFuncionarios: async function(){
 			const vm = this;
 			axios.get("/funcionarios/rest/funcionarios/listar")
-			.then(response => {vm.lista = response.data;
-			}).catch(function (error) {
+			.then(response => {
+				vm.lista = response.data;
+			})
+			.catch(function (error) {
 				vm.mostraAlertaErro("Erro interno", "Não foi possível listar os itens");
-			}).finally(function() {
-			});
+			})
 		},
 		mostraAlertaErro: function(erro, mensagem){
 			console.log(erro);

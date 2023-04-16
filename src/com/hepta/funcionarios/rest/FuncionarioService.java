@@ -43,8 +43,8 @@ public class FuncionarioService {
         try {
             dao.save(funcionario);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao cadastrar o funcionário!").build();
         }
 
         return Response.status(Status.OK).build();

@@ -84,7 +84,7 @@ public class SetorDAOImpl implements SetorDAO {
 		EntityManager em = HibernateUtil.getEntityManager();
 		List<Setor> setores = new ArrayList<>();
 		try {
-			Query query = em.createQuery("FROM Funcionario f join fetch f.setor ");
+			Query query = em.createQuery("SELECT s FROM Setor s");
 			setores = query.getResultList();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
