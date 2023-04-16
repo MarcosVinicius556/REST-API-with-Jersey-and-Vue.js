@@ -8,12 +8,28 @@
 <title>Funcionários - Início</title>
 <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="resources/css/bootstrap-vue.css">
+<link rel="stylesheet" type="text/css" href="resources/css/index.css">
 </head>
 
 <body>
 
-
 	<div id="inicio" class="container-fluid table" >
+
+		<!-- Componente modal -->
+		<div class="modal-container" v-if="showModal">
+			<h1>JavaScript Modal</h1>
+			<div id="fade" class="hide"></div>
+			<div id="modal" class="hide">
+				<div class="modal-header">
+					<h2>{{ modalTitle }}</h2>
+					<button class="btn btn-primary" @click="closeModal()" >Fechar</button>
+				</div>
+				<div class="modal-body">
+					<p>{{ msgModal }}</p>
+				</div>
+			</div>
+		</div>
+
 		<h4>Lista dos Funcionários</h4>
 		<a href="./pages/novo-funcionario.html" class="btn btn-primary">Cadastrar</a>
 		<table>
@@ -27,14 +43,14 @@
 			<th></th>
 		  </tr>
 		  <tbody id="event-table" >
-			<tr v-for="funcionario in lista">
+			<tr v-for="funcionario in lista" v-bind:key="funcionario.id_funcionario">
 			  <td>{{ funcionario.nome }}</td> 
 			  <td>{{ funcionario.setor.nome }}</td> 
 			  <td>{{ funcionario.salario }}</td> 
 			  <td>{{ funcionario.email }}</td> 
 			  <td>{{ funcionario.idade }}</td>
-			  <td><span @click="updateFuncionario(funcionario.id_funcionario)">&#9998;</span>
-				<span  @click="">&#10006;</span>
+			  <td><span @click="updateFuncionario(funcionario)">&#9998;</span>
+				<span  @click="deleteFuncionario(funcionario)">&#10006;</span>
 			  </td>
 			</tr>
 		  </tbody>

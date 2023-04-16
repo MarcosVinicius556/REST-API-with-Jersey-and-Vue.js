@@ -50,7 +50,6 @@ var app = new Vue({
                 let status = response.status;
                 if(status == RETORNO_COM_SUCESSO){
                     alert("Funcionário cadastrado com sucesso!");
-                    vm.currentRoute = '/funcionarios/rest/funcionarios/';
                 } else {
                     alert("Não foi possível cadastrar o funcionário!");
                 }

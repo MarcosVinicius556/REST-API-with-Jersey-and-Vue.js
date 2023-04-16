@@ -1,7 +1,12 @@
+const RETORNO_COM_SUCESSO = 200;
+
 var inicio = new Vue({
 	el:"#inicio",
     data: {
-        lista: []
+        lista: [],
+		showModal: false,
+		modalTitle: '',
+		msgModal: ''
     },
     created: function(){
         let vm =  this;
@@ -16,18 +21,34 @@ var inicio = new Vue({
 				vm.lista = response.data;
 			})
 			.catch(function (error) {
-				vm.mostraAlertaErro("Erro interno", "Não foi possível listar os itens");
+				vm.openModal('Erro Interno', 'Não foi possível listar os itens. Motivo: ' + error);
 			})
 		},
-		mostraAlertaErro: function(erro, mensagem){
-			console.log(erro);
-			alert(mensagem);
+		deleteFuncionario: function(funcionario){
+			const vm = this;
+			axios.delete('/funcionarios/rest/funcionarios/deletar/'+funcionario.id)
+			.then(response => {
+				let status = response.status;
+				if(status == RETORNO_COM_SUCESSO){
+					vm.openModal('Atenção', 'Funcionário removido com sucesso!');
+				}
+				else {
+					vm.openModal('Erro Interno', 'Não foi possível remover o funcionário selecionado!');
+				}
+			})
+			vm.listarFuncionarios();
 		},
-		createFuncionario: function(){
-
-		},
-		updateFuncionario: function(id_funcionario){
-			alert(id_funcionario);
+		openModal: function(titulo, msg){
+			const vm = this;
+			vm.modalTitle = titulo;
+			vm.msgModal = msg;
+			vm.showModal = true;
+		}, 
+		closeModal: function(){
+			const vm = this;
+			vm.showModal = false;
+			vm.modalTitle = '';
+			vm.msgModal = '';
 		}
     }
 });

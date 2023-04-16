@@ -97,7 +97,14 @@ public class FuncionarioService {
     @Produces(MediaType.APPLICATION_JSON)
     @DELETE
     public Response FuncionarioDelete(@PathParam("id") Integer id) {
-        return Response.status(Status.NOT_IMPLEMENTED).build();
+    	  try {
+              dao.delete(id);
+          } catch (Exception e) {
+              e.printStackTrace();
+              return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao remover o funcionário!").build();
+          }
+
+          return Response.status(Status.OK).build();
     }
 
     /**
