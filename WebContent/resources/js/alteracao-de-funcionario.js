@@ -1,13 +1,14 @@
 const RETORNO_COM_SUCESSO = 200;
 
 var app = new Vue({
-    el: "#cadastro",
+    el: "#alteracao",
     data:{
         showModal: false,
 		modalTitle: '',
 		msgModal: '',
         conteudoCarregado: false,
         funcionario: {
+            id: '',
             nome: '',
             idade: '',
             salario: '',
@@ -21,8 +22,14 @@ var app = new Vue({
 
     },
     created: function(){
+        /**
+         * Carregar os dados do funcionário aqui
+         */
         let vm = this;
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        vm.funcionario.id = urlSearchParams.get("id");
         vm.buscaSetores();
+        vm.buscaFuncionario();
         vm.conteudoCarregado = true;
     },
     methods:{
@@ -31,16 +38,27 @@ var app = new Vue({
             axios.get("/funcionarios/rest/setores/listar")
                  .then(response => {
                     vm.listaSetor = response.data;
-                 }).catch(error => {
+                 })
+                 .catch(error => {
                     vm.openModal("Erro interno", error);  
                  });
         },
-        cadastrar: async function(e){
+        buscaFuncionario: function(){
+            const vm = this;
+            axios.get(`/funcionarios/rest/funcionarios/buscar/${vm.funcionario.id}`)
+                 .then(response => {
+                    vm.funcionario = response.data;
+                 })
+                 .catch(error => {
+                    vm.openModal(error, "Erro ao buscar funcionário!");
+                 });
+        },
+        alterar: async function(e){
             e.preventDefault();
             const vm = this;
             console.log(vm.funcionario);
 
-            axios.post("/funcionarios/rest/funcionarios/salvar", {
+            axios.put("/funcionarios/rest/funcionarios/atualizar", {
              nome: vm.funcionario.nome,
              email: vm.funcionario.email,
              idade: vm.funcionario.idade,
@@ -52,9 +70,9 @@ var app = new Vue({
             }).then(response => {
                 let status = response.status;
                 if(status == RETORNO_COM_SUCESSO){
-                    vm.openModal("Sucesso", "Funcionário cadastrado com sucesso!");
+                    vm.openModal("Sucesso", "Funcionário alterado!");
                 } else {
-                    vm.openModal("Erro", "Não foi possível cadastrar o funcionário!");
+                    vm.openModal("Erro", "Não foi possível alterar o funcionário!");
                 }
             });
             // window.location.href = "../index.html";

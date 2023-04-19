@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<link rel="shortcut icon" href="favicon.ico"/>
-	<title>Alterar dados do Funcionário </title>
+	<title>Alterar um Funcionário </title>
 	<link rel="stylesheet" type="text/css" href="../resources/css/bootstrap.min.css">
 	<link rel="stylesheet" href="../resources/css/index.css">
 </head>
@@ -22,8 +22,8 @@
 		</div>
 	</nav>
 
-	  <main class="container-fluid">
-		<div id="cadastro">
+	<main class="container-fluid">
+		<div id="alteracao">
 
 			<!-- 
 				Início Componente modal
@@ -45,9 +45,9 @@
 			-->
 
 			<div class="container" v-if="conteudoCarregado">
-				<h4>Cadastro de Funcionário</h4>
-					
-				<form class="funcionario-form" @submit="cadastrar">
+				<h4>Alteração de Funcionário</h4>
+
+				<form class="funcionario-form" @submit="alterar">
 					<div class="form-row">
 						<div class="form-group col-md-8">
 							<label for="inputNome">Nome</label>
@@ -75,7 +75,7 @@
 
 				<button class="btn btn-success btn-lg float-right"
 							type="submit">
-						Cadastrar
+						Salvar
 					</button>
 					
 				</form>	
@@ -88,6 +88,6 @@
 
 	<script src="../resources/js/vue.js"></script>
 	<script src="../resources/js/axios.min.js"></script>
-	<script src="../resources/js/cadastro-de-funcionario.js"></script>
+	<script src="../resources/js/alteracao-de-funcionario.js"></script>
 </body>
 </html>

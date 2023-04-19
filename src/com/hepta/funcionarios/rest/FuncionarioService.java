@@ -71,6 +71,28 @@ public class FuncionarioService {
         };
         return Response.status(Status.OK).entity(entity).build();
     }
+    
+    /**
+     * Busca um funcionário pelo id
+     * 
+     * @return response 200 (OK) - Conseguiu listar
+     */
+    @Path("/buscar/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @GET
+    public Response funcionarioFindById(@PathParam("id") Integer id) {
+    	Funcionario funcionario = null;
+        try {
+            funcionario = dao.find(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao buscar Funcionarios").build();
+        }
+
+        GenericEntity<Funcionario> entity = new GenericEntity<Funcionario>(funcionario) {
+        };
+        return Response.status(Status.OK).entity(entity).build();
+    }
 
     /**
      * Atualiza um Funcionario
@@ -84,10 +106,17 @@ public class FuncionarioService {
     @Produces(MediaType.APPLICATION_JSON)
     @PUT
     public Response funcionarioUpdate(Funcionario funcionario) {
-        return Response.status(Status.NOT_IMPLEMENTED).build();
+    	  try {
+              dao.update(funcionario);
+          } catch (Exception e) {
+              e.printStackTrace();
+              return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao cadastrar o funcionário!").build();
+          }
+
+          return Response.status(Status.OK).build();
     }
 
-    /**
+    /**delete
      * Remove um Funcionario
      * 
      * @param id: id do funcionario

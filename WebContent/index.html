@@ -13,52 +13,64 @@
 
 <body>
 
-	<div id="inicio" class="container-fluid table" >
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<a class="navbar-brand" href="index.html">Home</a>
+	  </nav>
+	
+	<div id="inicio" class="container-fluid">
 
-		<!-- Componente modal -->
-		<div class="modal-container" v-if="showModal">
-			<h1>JavaScript Modal</h1>
-			<div id="fade" class="hide"></div>
-			<div id="modal" class="hide">
-				<div class="modal-header">
-					<h2>{{ modalTitle }}</h2>
-					<button class="btn btn-primary" @click="closeModal()" >Fechar</button>
-				</div>
-				<div class="modal-body">
-					<p>{{ msgModal }}</p>
+		<!-- 
+			Início Componente modal
+		 -->
+		 <div class="table" v-if="lista.length > 0">
+			<div class="modal-container" v-if="showModal">
+				<div id="fade"></div>
+				<div id="modal">
+					<div class="modal-header">
+						<h2>{{ modalTitle }}</h2>
+						<button class="btn btn-primary" @click="closeModal()" >Fechar</button>
+					</div>
+					<div class="modal-body">
+						<p>{{ msgModal }}</p>
+					</div>
 				</div>
 			</div>
-		</div>
+			<!-- 
+				Final Componente modal
+			-->
 
-		<h4>Lista dos Funcionários</h4>
-		<a href="./pages/novo-funcionario.html" class="btn btn-primary">Cadastrar</a>
-		<table>
-		  <tr>
-			<th>Nome</th>
-			<th>Setor</th>
-			<th>Salário</th>
-			<th>Email</th>
-			<th>Idade</th>
-			<th></th>
-			<th></th>
-		  </tr>
-		  <tbody id="event-table" >
-			<tr v-for="funcionario in lista" v-bind:key="funcionario.id_funcionario">
-			  <td>{{ funcionario.nome }}</td> 
-			  <td>{{ funcionario.setor.nome }}</td> 
-			  <td>{{ funcionario.salario }}</td> 
-			  <td>{{ funcionario.email }}</td> 
-			  <td>{{ funcionario.idade }}</td>
-			  <td><span @click="updateFuncionario(funcionario)">&#9998;</span>
-				<span  @click="deleteFuncionario(funcionario)">&#10006;</span>
-			  </td>
+			<h4>Lista dos Funcionários</h4>
+			<a class="btn btn-primary fg-black" @click="redirectToCreate()">Cadastrar</a>
+			<table class="table">
+			<tr>
+				<th>Nome</th> 
+				<th>Setor</th>
+				<th>Salário</th>
+				<th>Email</th>
+				<th>Idade</th>
+				<th></th>
+				<th></th>
 			</tr>
-		  </tbody>
-		</table>
-	  </div>
+			<tbody id="event-table" >
+				<tr v-for="funcionario in lista" v-bind:key="funcionario.id_funcionario">
+				<td>{{ funcionario.nome }}</td> 
+				<td>{{ funcionario.setor.nome }}</td> 
+				<td>{{ funcionario.salario }}</td> 
+				<td>{{ funcionario.email }}</td> 
+				<td>{{ funcionario.idade }}</td>
+				<td><span class="btn btn-success" @click="redirectToUpdate(funcionario)">Editar</span></td>
+				<td><span class="btn btn-danger"  @click="redirectToDelete(funcionario)">Excluir</span></td>
+				</tr>
+			</tbody>
+			</table>
+		</div>
+		<div class="d-flex justify-content-center" v-else>
+		  <h1>Carregando...</h1>
+		</div>
+	</div>
 
-	<script src="resources/js/vue.js"></script>
 	<script src="resources/js/axios.min.js"></script>
+	<script src="resources/js/vue.js"></script>
 	<script src="resources/js/index.js"></script>
 </body>
 </html>

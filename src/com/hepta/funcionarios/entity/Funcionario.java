@@ -24,7 +24,7 @@ public class Funcionario implements Serializable {
 	@Column(name = "NOME")
 	private String nome;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "FK_SETOR")
 	private Setor setor;
 
