@@ -72,6 +72,28 @@ public class SetorService {
     }
 
     /**
+     * Busca um setor pelo id
+     * 
+     * @return response 200 (OK) - Conseguiu listar
+     */
+    @Path("/buscar/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @GET
+    public Response funcionarioFindById(@PathParam("id") Integer id) {
+    	Setor setor = null;
+        try {
+            setor = dao.find(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao buscar o setor").build();
+        }
+
+        GenericEntity<Setor> entity = new GenericEntity<Setor>(setor) {
+        };
+        return Response.status(Status.OK).entity(entity).build();
+    }
+    
+    /**
      * Atualiza um Setor
      * 
      * @param id:          id do Setor
@@ -83,7 +105,14 @@ public class SetorService {
     @Produces(MediaType.APPLICATION_JSON)
     @PUT
     public Response setorUpdate(Setor setor) {
-        return Response.status(Status.NOT_IMPLEMENTED).build();
+    	try {
+            dao.update(setor);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao atualizar o setor!").build();
+        }
+
+        return Response.status(Status.OK).build();
     }
 
     /**
@@ -96,7 +125,14 @@ public class SetorService {
     @Produces(MediaType.APPLICATION_JSON)
     @DELETE
     public Response setorDelete(@PathParam("id") Integer id) {
-        return Response.status(Status.NOT_IMPLEMENTED).build();
+    	try {
+            dao.delete(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao remover o setor!").build();
+        }
+
+        return Response.status(Status.OK).build();
     }
 
     /**

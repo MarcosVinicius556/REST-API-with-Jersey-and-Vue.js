@@ -110,7 +110,7 @@ public class FuncionarioService {
               dao.update(funcionario);
           } catch (Exception e) {
               e.printStackTrace();
-              return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao cadastrar o funcionário!").build();
+              return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao atualizar o funcionário!").build();
           }
 
           return Response.status(Status.OK).build();

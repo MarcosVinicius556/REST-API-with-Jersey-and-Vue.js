@@ -4,9 +4,10 @@
 <head>
 	<meta charset="utf-8">
 	<link rel="shortcut icon" href="favicon.ico"/>
-	<title>Alterar dados do Funcionário </title>
+	<title>Cadastrar Novo Setor</title>
 	<link rel="stylesheet" type="text/css" href="../resources/css/bootstrap.min.css">
-	<link rel="stylesheet" href="../resources/css/index.css">
+	<link rel="stylesheet" type="text/css" href="../resources/css/bootstrap-vue.css">
+<link rel="stylesheet" type="text/css" href="../resources/css/index.css">
 </head>
 
 <body>
@@ -17,13 +18,13 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 		  <div class="navbar-nav">
-			<a class="nav-item nav-link" href="../index.html">Voltar</a>
+			<a class="nav-item nav-link" href="listar-setor.html">Voltar</a>
 		  </div>
 		</div>
 	</nav>
 
 	  <main class="container-fluid">
-		<div id="cadastro">
+		<div id="cadastro-setor">
 
 			<!-- 
 				Início Componente modal
@@ -45,38 +46,21 @@
 			-->
 
 			<div class="container" v-if="conteudoCarregado">
-				<h4>Cadastro de Funcionário</h4>
+				<h4>Cadastro de Setor</h4>
 					
-				<form class="funcionario-form" @submit="cadastrarFuncionario">
+				<form class="setor-form" @submit="cadastrarSetor">
 					<div class="form-row">
 						<div class="form-group col-md-8">
 							<label for="inputNome">Nome</label>
-							<input type="text" class="form-control" class="inputNome" placeholder="Nome" v-model="funcionario.nome">
+							<input type="text" class="form-control" class="inputNome" placeholder="Nome" v-model="setor.nome">
 						</div>
-					</div>
-					<div class="form-group">
-						<label for="inputEmail">Email</label>
-						<input type="email" class="form-control col-md-6" class="inputEmail" placeholder="Email" v-model="funcionario.email">
-						<label for="inputIdade">Idade</label>
-						<input type="number" class="form-control col-md-2" class="inputIdade" placeholder="Idade" v-model="funcionario.idade">
-					</div>
-					<div class="form-row">
-						<div class="form-group col-md-2">
-							<label for="inputSalario">Salario</label>
-							<input type="number" class="form-control" class="inputSalario" placeholder="Salário" v-model="funcionario.salario">
-						</div>
-						<div class="form-group col-md-4">
-							<label for="inputSetor">Setor</label>
-							<select class="inputSetor" class="form-control" v-model="funcionario.setor">
-							<option v-for="setor in listaSetor" v-bind:value="setor"> {{ setor.nome }}</option>
-						</select>
 					</div>
 				</div>
 
 				<button class="btn btn-success btn-lg float-right"
 							type="submit">
 						Cadastrar
-					</button>
+				</button>
 					
 				</form>	
 			</div>
@@ -88,6 +72,6 @@
 
 	<script src="../resources/js/vue.js"></script>
 	<script src="../resources/js/axios.min.js"></script>
-	<script src="../resources/js/cadastro-de-funcionario.js"></script>
+	<script src="../resources/js/cadastro-de-setor.js"></script>
 </body>
 </html>

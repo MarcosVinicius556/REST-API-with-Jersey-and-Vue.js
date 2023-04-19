@@ -35,7 +35,7 @@ var app = new Vue({
                     vm.openModal("Erro interno", error);  
                  });
         },
-        cadastrar: async function(e){
+        cadastrarFuncionario: async function(e){
             e.preventDefault();
             const vm = this;
             console.log(vm.funcionario);

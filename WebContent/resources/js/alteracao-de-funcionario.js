@@ -53,12 +53,13 @@ var app = new Vue({
                     vm.openModal(error, "Erro ao buscar funcionário!");
                  });
         },
-        alterar: async function(e){
+        alterarFuncionario: async function(e){
             e.preventDefault();
             const vm = this;
             console.log(vm.funcionario);
 
             axios.put("/funcionarios/rest/funcionarios/atualizar", {
+             id: vm.funcionario.id,
              nome: vm.funcionario.nome,
              email: vm.funcionario.email,
              idade: vm.funcionario.idade,

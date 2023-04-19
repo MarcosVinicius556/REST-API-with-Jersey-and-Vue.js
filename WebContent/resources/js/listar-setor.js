@@ -1,7 +1,7 @@
 const RETORNO_COM_SUCESSO = 200;
 
 var inicio = new Vue({
-	el:"#inicio",
+	el:"#setores",
     data: {
         lista: [],
 		showModal: false,
@@ -10,15 +10,15 @@ var inicio = new Vue({
     },
     created: function(){
         let vm =  this;
-        vm.listarFuncionarios();
+        vm.listarSetores();
     },
     methods:{
 		/*
 		 * Busca os itens para a lista da primeira página
 		 */
-        listarFuncionarios: function(){
+        listarSetores: function(){
 			const vm = this;
-			axios.get("/funcionarios/rest/funcionarios/listar")
+			axios.get("/funcionarios/rest/setores/listar")
 				 .then(response => {
 						vm.lista = response.data;
 				 }).catch(function (error) {
@@ -28,39 +28,32 @@ var inicio = new Vue({
 		/**
 		 * Exclusão do funcionário
 		 */
-		redirectToDelete: function(funcionario){
+		redirectToDelete: function(setor){
 			const vm = this;
-			axios.delete('/funcionarios/rest/funcionarios/deletar/'+funcionario.id)
+			axios.delete('/funcionarios/rest/setores/deletar/'+setor.id)
 				 .then(response => {
 						let status = response.status;
 						if(status == RETORNO_COM_SUCESSO){
-							vm.openModal('Atenção', 'Funcionário removido com sucesso!');
+							vm.openModal('Atenção', 'setor removido com sucesso!');
 						} else {
-							vm.openModal('Erro Interno', 'Não foi possível remover o funcionário selecionado!');
+							vm.openModal('Erro Interno', 'Não foi possível remover o setor selecionado!');
 						}
 					})
-			window.location.href = "../index.html";
+			window.location.href = "listar-setor.html";
 		},
 		/**
 		 * insert de um novo funcionário
 		 */
 		redirectToCreate: function(){
 			const vm = this;
-			window.location.href = "./pages/novo-funcionario.html";
+			window.location.href = "novo-setor.html";
 		},
 		/**
 		 * Update do funcionário
 		 */
-		redirectToUpdate: function(funcionario){
+		redirectToUpdate: function(setor){
 			const vm = this;
-			window.location.href = `./pages/alterar-funcionario.html?id=${funcionario.id}`;
-		},
-		/**
-		 * Leva para a view com as demais ações do setor
-		 */
-		redirectToListSetor: function(){
-			const vm = this;
-			window.location.href = `./pages/listar-setor.html`;
+			window.location.href = `alterar-setor.html?id=${setor.id}`;
 		},
 		/**
 		 * Controles do MODAL

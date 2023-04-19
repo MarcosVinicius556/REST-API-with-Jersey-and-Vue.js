@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-store" />
+<link rel="shortcut icon" href="favicon.ico"/>
+<title>Setores</title>
+<link rel="stylesheet" type="text/css" href="../resources/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../resources/css/bootstrap-vue.css">
+<link rel="stylesheet" type="text/css" href="../resources/css/index.css">
+</head>
+
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<a class="navbar-brand" href="../index.html">Voltar</a>
+	</nav>
+	
+	<div id="setores" class="container-fluid">
+
+		<!-- 
+			Início Componente modal
+		 -->
+		 <div class="table" v-if="lista.length > 0">
+			<div class="modal-container" v-if="showModal">
+				<div id="fade"></div>
+				<div id="modal">
+					<div class="modal-header">
+						<h2>{{ modalTitle }}</h2>
+						<button class="btn btn-primary" @click="closeModal()" >Fechar</button>
+					</div>
+					<div class="modal-body">
+						<p>{{ msgModal }}</p>
+					</div>
+				</div>
+			</div>
+			<!-- 
+				Final Componente modal
+			-->
+
+			<h4>Lista dos Setores</h4>
+			<a class="btn btn-primary" @click="redirectToCreate()">Cadastrar</a>
+			<table class="table">
+			<tr>
+				<th>Código</th> 
+				<th>Nome</th>
+				<th></th>
+				<th></th>
+			</tr>
+			<tbody id="event-table" >
+				<tr v-for="setor in lista" v-bind:key="setor.id">
+				<td>{{ setor.id }}</td> 
+				<td>{{ setor.nome }}</td> 
+				<td><span class="btn btn-success" @click="redirectToUpdate(setor)">Editar</span></td>
+				<td><span class="btn btn-danger"  @click="redirectToDelete(setor)">Excluir</span></td>
+				</tr>
+			</tbody>
+			</table>
+		</div>
+		<div class="d-flex justify-content-center" v-else>
+		  <h1>Carregando...</h1>
+		</div>
+	</div>
+
+	<script src="../resources/js/axios.min.js"></script>
+	<script src="../resources/js/vue.js"></script>
+	<script src="../resources/js/listar-setor.js"></script>
+</body>
+</html>
