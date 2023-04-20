@@ -1,0 +1,33 @@
+--
+-- DataBase
+--
+CREATE DATABASE funcionarios_prova;
+USE funcionarios_prova;
+
+--
+-- Setor
+--
+DROP TABLE IF EXISTS `setor`;
+
+CREATE TABLE `setor` (
+  `ID_SETOR` int NOT NULL AUTO_INCREMENT,
+  `NOME` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID_SETOR`)
+) ENGINE=InnoDB AUTO_INCREMENT=657 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Funcionário
+--
+DROP TABLE IF EXISTS `funcionario`;
+
+CREATE TABLE `funcionario` (
+  `ID_FUNCIONARIO` int NOT NULL AUTO_INCREMENT,
+  `DS_EMAIL` varchar(255) DEFAULT NULL,
+  `NU_IDADE` int DEFAULT NULL,
+  `NOME` varchar(255) DEFAULT NULL,
+  `NU_SALARIO` double DEFAULT NULL,
+  `FK_SETOR` int DEFAULT NULL,
+  PRIMARY KEY (`ID_FUNCIONARIO`),
+  KEY `FK2peemlj28pdi3f8sp2ef28hhf` (`FK_SETOR`),
+  CONSTRAINT `FK2peemlj28pdi3f8sp2ef28hhf` FOREIGN KEY (`FK_SETOR`) REFERENCES `setor` (`ID_SETOR`)
+) ENGINE=InnoDB AUTO_INCREMENT=572 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

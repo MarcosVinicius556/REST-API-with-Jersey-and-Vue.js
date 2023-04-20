@@ -1,0 +1,269 @@
+{
+	"info": {
+		"_postman_id": "c5f81356-f72c-4b10-82a8-a1c28db6ffd5",
+		"name": "Testes Processo - Seletivo (HEPTA)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Funcionário - save",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"nome\": \"Marcos Vinicius\",\r\n        \"email\": \"marcosvinicios@gmail.com\",\r\n        \"idade\": 20,\r\n        \"salario\": 3000,\r\n        \"setor\":{\r\n            \"id\": 349,\r\n            \"nome\": \"RH\"\r\n        }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/funcionarios/rest/funcionarios/salvar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"funcionarios",
+						"rest",
+						"funcionarios",
+						"salvar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Funcionário - update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"id\": 1,\r\n        \"nome\": \"Marcos Vinicius\",\r\n        \"email\": \"marcosviniciosssss@gmail.com\",\r\n        \"idade\": 20,\r\n        \"salario\": 3000,\r\n        \"setor\":{\r\n            \"id\": 1,\r\n            \"nome\": \"Recursos Humanos\"\r\n        }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/funcionarios/rest/funcionarios/atualizar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"funcionarios",
+						"rest",
+						"funcionarios",
+						"atualizar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Funcionário - delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/funcionarios/rest/funcionarios/deletar/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"funcionarios",
+						"rest",
+						"funcionarios",
+						"deletar",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Funcionário - findAll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/funcionarios/rest/funcionarios/listar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"funcionarios",
+						"rest",
+						"funcionarios",
+						"listar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Funcionário - findById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/funcionarios/rest/funcionarios/buscar/29",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"funcionarios",
+						"rest",
+						"funcionarios",
+						"buscar",
+						"29"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Setor - save",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"nome\": \"Administrativo\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/funcionarios/rest/setores/salvar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"funcionarios",
+						"rest",
+						"setores",
+						"salvar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Setor - update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"Recursos Humanos\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/funcionarios/rest/setores/atualizar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"funcionarios",
+						"rest",
+						"setores",
+						"atualizar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Setor- delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/funcionarios/rest/setores/deletar/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"funcionarios",
+						"rest",
+						"setores",
+						"deletar",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Setor- findAll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/funcionarios/rest/setores/listar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"funcionarios",
+						"rest",
+						"setores",
+						"listar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Setor - findById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/funcionarios/rest/setores/buscar/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"funcionarios",
+						"rest",
+						"setores",
+						"buscar",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
