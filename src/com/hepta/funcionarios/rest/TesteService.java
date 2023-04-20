@@ -11,6 +11,6 @@ public class TesteService {
     @Produces(MediaType.TEXT_PLAIN)
     @GET
     public String testeJersey() {
-        return "Testando Jersey.";
+        return "Sistema Rodando!";
     }
 }

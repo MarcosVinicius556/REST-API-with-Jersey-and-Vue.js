@@ -2,6 +2,7 @@ package com.hepta.funcionarios.rest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -16,7 +17,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.hepta.funcionarios.entity.Funcionario;
+import com.hepta.funcionarios.dto.FuncionarioDTO;
 import com.hepta.funcionarios.persistence.FuncionarioDAO;
 import com.hepta.funcionarios.persistence.exception.ObjectNotFoundException;
 import com.hepta.funcionarios.persistence.factory.DAOFactory;
@@ -33,16 +34,16 @@ public class FuncionarioService {
     /**
      * Adiciona novo Funcionario
      * 
-     * @param Funcionario: Novo Funcionario
+     * @param FuncionarioDTO: Novo Funcionario
      * @return response 200 (OK) - Conseguiu adicionar
      */
     @Path("/salvar")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @POST
-    public Response funcionarioCreate(Funcionario funcionario) {
+    public Response funcionarioCreate(FuncionarioDTO funcionario) {
         try {
-            dao.save(funcionario);
+            dao.save(funcionario.fromDTO()); 
         } catch (Exception e) {
             e.printStackTrace();
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao cadastrar o funcionário!").build();
@@ -60,15 +61,17 @@ public class FuncionarioService {
     @Produces(MediaType.APPLICATION_JSON)
     @GET
     public Response funcionarioRead() {
-        List<Funcionario> funcionarios = new ArrayList<>();
+        List<FuncionarioDTO> funcionarios = new ArrayList<>();
         try {
-            funcionarios = dao.getAll();
+            funcionarios = dao.getAll().stream()
+            						   .map(func -> new FuncionarioDTO(func))
+            						   .collect(Collectors.toList());
         } catch (Exception e) {
             e.printStackTrace();
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao buscar Funcionarios").build();
         }
 
-        GenericEntity<List<Funcionario>> entity = new GenericEntity<List<Funcionario>>(funcionarios) {
+        GenericEntity<List<FuncionarioDTO>> entity = new GenericEntity<List<FuncionarioDTO>>(funcionarios) {
         };
         return Response.status(Status.OK).entity(entity).build();
     }
@@ -83,9 +86,9 @@ public class FuncionarioService {
     @Produces(MediaType.APPLICATION_JSON)
     @GET
     public Response funcionarioFindById(@PathParam("id") Integer id) {
-    	Funcionario funcionario = null;
+    	FuncionarioDTO funcionario = null;
         try {
-            funcionario = dao.findById(id);
+            funcionario = new FuncionarioDTO(dao.findById(id));
         } catch (ObjectNotFoundException e) {
             e.printStackTrace();
             return Response.status(Status.NOT_FOUND).entity("Não foi encontrado um funcionário com este ID " + id).build();
@@ -94,7 +97,7 @@ public class FuncionarioService {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao buscar Funcionarios").build();
         }
 
-        GenericEntity<Funcionario> entity = new GenericEntity<Funcionario>(funcionario) {
+        GenericEntity<FuncionarioDTO> entity = new GenericEntity<FuncionarioDTO>(funcionario) {
         };
         return Response.status(Status.OK).entity(entity).build();
     }
@@ -102,7 +105,7 @@ public class FuncionarioService {
     /**
      * Atualiza um Funcionario
      * 
-     * @param Funcionario: Funcionario atualizado
+     * @param FuncionarioDTO: Funcionario atualizado
      * @return response 200 (OK) - Conseguiu atualizar
      * @return response 404 (NOT FOUND) - Não encontrou funcionário
      */
@@ -110,9 +113,9 @@ public class FuncionarioService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @PUT
-    public Response funcionarioUpdate(Funcionario funcionario) {
+    public Response funcionarioUpdate(FuncionarioDTO funcionario) {
     	  try {
-              dao.update(funcionario);
+              dao.update(funcionario.fromDTO());
           } catch (ObjectNotFoundException e) {
               e.printStackTrace();
               return Response.status(Status.NOT_FOUND).entity("Não foi encontrado um funcionário com este ID " + funcionario.getId()).build();

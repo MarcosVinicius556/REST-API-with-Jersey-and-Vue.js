@@ -2,7 +2,6 @@ package com.hepta.funcionarios.rest;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.ws.rs.core.Response.Status;
 
 import org.junit.jupiter.api.AfterAll;
@@ -10,41 +9,31 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.hepta.funcionarios.dto.FuncionarioDTO;
 import com.hepta.funcionarios.entity.Funcionario;
 import com.hepta.funcionarios.entity.Setor;
-import com.hepta.funcionarios.persistence.singleton.HibernateUtil;
+import com.hepta.funcionarios.persistence.FuncionarioDAO;
+import com.hepta.funcionarios.persistence.SetorDAO;
+import com.hepta.funcionarios.persistence.factory.DAOFactory;
 
 @SuppressWarnings("unchecked")
 class FuncionarioServiceTest {
 
 	
 	private static FuncionarioService funcionarioService;
-	private static SetorService setorService;
+	private static FuncionarioDAO funcionarioDAO;
+	private static SetorDAO setorDAO;
 	
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 		funcionarioService = new FuncionarioService();
-		setorService = new SetorService();
+		funcionarioDAO = DAOFactory.createFuncionarioDAO();
+		setorDAO = DAOFactory.createSetorDAO();
 	}
 	
 	@AfterAll
 	static void setAfterTests() {
-		//Removendo tudo que foi inserido
-		boolean removeAll = true; //Passar para true quando quiser que remova todas os novos objetos após o teste
 		
-		if(removeAll) {
-			EntityManager em = HibernateUtil.getEntityManager();
-			try {
-				em.getTransaction().begin();
-				em.createQuery("DELETE FROM Funcionario").executeUpdate();
-				em.createQuery("DELETE FROM Setor").executeUpdate();
-				em.getTransaction().commit();
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				HibernateUtil.shutdown();
-			}
-		}
 	}
 	
 	/**
@@ -53,86 +42,124 @@ class FuncionarioServiceTest {
 	
 	@Test
 	void deveAdicionarUmFuncionario() {
-		Setor setor = new Setor("Teste 1");
-		setorService.setorCreate(setor);
-		
-		Funcionario funcionario = new Funcionario("Teste", setor, 2000.0, "teste@gmail.com", 21);
+		Setor setor = new Setor("Dev 1");
+		Funcionario funcionario = new Funcionario("MarcosVinicius Angeli", setor, 3000.0, "marcos@gmail.com", 21);
+		List<FuncionarioDTO> lstBefore = null;
+		List<FuncionarioDTO> lstAfter = null;
+		int quantInicial = 0;
+		int quantFinal = 0;
+		boolean error = false;
+		try {
+			setorDAO.save(setor);
+			lstBefore = (List<FuncionarioDTO>) funcionarioService.funcionarioRead().getEntity();
+			quantInicial = lstBefore.size();
+			
+			funcionarioService.funcionarioCreate(new FuncionarioDTO(funcionario));
 
-		List<Funcionario> lstBefore = (List<Funcionario>) funcionarioService.funcionarioRead().getEntity();
-		int quantInicial = lstBefore.size();
-		
-		funcionarioService.funcionarioCreate(funcionario);
-		
-		List<Funcionario> lstAfter = (List<Funcionario>) funcionarioService.funcionarioRead().getEntity();
-		int quantFinal = lstAfter.size();
+			lstAfter = (List<FuncionarioDTO>) funcionarioService.funcionarioRead().getEntity();
+			
+			quantFinal = lstAfter.size();
+		} catch (Exception e) {
+			e.printStackTrace();
+			error = true;
+		}
 		
 		Assertions.assertEquals(quantInicial + 1, quantFinal, "Inseriu mais de um, ou nenhum");
+		Assertions.assertEquals(error, false, "Ocorreu um erro na inserção");
 	}
 	
 	@Test
 	void deveRemoverUmFuncionario() {
-		Setor setor = new Setor("Teste 2");
-		setorService.setorCreate(setor);
+		Setor setor = new Setor("Qualidade 2");
+		Funcionario funcionario = new Funcionario("Ellen", setor, 4000.0, "ellen@gmail.com", 21);
+		List<FuncionarioDTO> lstBefore = null;
+		List<FuncionarioDTO> lstAfter = null;
+		int quantInicial = 0;
+		int quantFinal = 0;
+		boolean error = false;
+		try {
+			setorDAO.save(setor);
+			
+			funcionarioDAO.save(funcionario);
+			
+			lstBefore = (List<FuncionarioDTO>) funcionarioService.funcionarioRead().getEntity();
+			quantInicial = lstBefore.size();
+			
+			funcionarioService.FuncionarioDelete(funcionario.getId());
+			
+			lstAfter = (List<FuncionarioDTO>) funcionarioService.funcionarioRead().getEntity();
+			quantFinal = lstAfter.size();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			error = true;
+		}
 		
-		Funcionario funcionario = new Funcionario("Teste", setor, 2000.0, "teste@gmail.com", 21);
-		funcionarioService.funcionarioCreate(funcionario);
 		
-		List<Funcionario> lstBefore = (List<Funcionario>) funcionarioService.funcionarioRead().getEntity();
-		int quantInicial = lstBefore.size();
-		
-		funcionarioService.FuncionarioDelete(funcionario.getId());
-		
-		List<Funcionario> lstAfter = (List<Funcionario>) funcionarioService.funcionarioRead().getEntity();
-		int quantFinal = lstAfter.size();
-		
-		Assertions.assertEquals(quantInicial - 1, quantFinal, "Removeu mais de um, ou nenhum");		
+		Assertions.assertEquals(quantInicial - 1, quantFinal, "Removeu mais de um, ou nenhum");
+		Assertions.assertEquals(error, false, "Erro na exclusão");
 	}
 	
 	@Test
 	void deveRetornarUmFuncionario() {
-		Setor setor = new Setor("Teste 3");
-		setorService.setorCreate(setor);
+		Setor setor = new Setor("Adm 3");
+		Funcionario f1 = new Funcionario("Rosa Maria", setor, 6000.0, "rosa@gmail.com", 21);
+		boolean error = false;
+		try {
+			setorDAO.save(setor);
+			funcionarioDAO.save(f1);
+		} catch (Exception e) {
+			e.printStackTrace();
+			error = true;
+		}
 		
-		Funcionario f1 = new Funcionario("Teste", setor, 2000.0, "teste@gmail.com", 21);
-		funcionarioService.funcionarioCreate(f1);
+		FuncionarioDTO fTest = (FuncionarioDTO) funcionarioService.funcionarioFindById(f1.getId()).getEntity();
 		
-		Funcionario fTest = (Funcionario) funcionarioService.funcionarioFindById(f1.getId()).getEntity();
-		
-		Assertions.assertEquals(f1, fTest, "O funcionário retornado não foi o mesmo inserido");
+		Assertions.assertEquals(f1, fTest.fromDTO(), "O funcionário retornado não foi o mesmo inserido");
+		Assertions.assertEquals(error, false, "Ocorreu um erro na busca");
 	}
 	
 	
 	@Test
 	void deveRetornarUmaLista() {
 		Setor setor = new Setor("Teste 4");
-		setorService.setorCreate(setor);
+		Funcionario f1 = new Funcionario("Marco Antonio", setor, 4500.0, "marco_antonio@gmail.com", 21); 
+		Funcionario f2 = new Funcionario("Marcos Antonio Angeli", setor, 2000.0, "marcos_antonio@gmail.com", 22);
+		Funcionario f3 = new Funcionario("Lucas", setor, 3500.0, "lucas@gmail.com", 23);
+		Funcionario f4 = new Funcionario("Camilla", setor, 4000.0, "camilla@gmail.com", 24);
+		Funcionario f5 = new Funcionario("João", setor, 1800.0, "joao@gmail.com", 25);
+		List<FuncionarioDTO> lstBefore = null;
+		List<FuncionarioDTO> lstAfter = null;
+		boolean error = false;
+		try {
+			setorDAO.save(setor);
+			
+			lstBefore = (List<FuncionarioDTO>) funcionarioService.funcionarioRead().getEntity();
+			
+			funcionarioService.funcionarioCreate(new FuncionarioDTO(f1));
+			lstBefore.add(new FuncionarioDTO(f1));
+			
+			funcionarioService.funcionarioCreate(new FuncionarioDTO(f2));
+			lstBefore.add(new FuncionarioDTO(f2));
+			
+			funcionarioService.funcionarioCreate(new FuncionarioDTO(f3));
+			lstBefore.add(new FuncionarioDTO(f3));
+			
+			funcionarioService.funcionarioCreate(new FuncionarioDTO(f4));
+			lstBefore.add(new FuncionarioDTO(f4));
+			
+			funcionarioService.funcionarioCreate(new FuncionarioDTO(f5));
+			lstBefore.add(new FuncionarioDTO(f5));
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			error = true;
+		}
 		
-		Funcionario f1 = new Funcionario("Teste 1", setor, 1000.0, "teste_1@gmail.com", 21); 
-		Funcionario f2 = new Funcionario("Teste 2", setor, 2000.0, "teste_2@gmail.com", 22);
-		Funcionario f3 = new Funcionario("Teste 3", setor, 3000.0, "teste_3@gmail.com", 23);
-		Funcionario f4 = new Funcionario("Teste 4", setor, 4000.0, "teste_4@gmail.com", 24);
-		Funcionario f5 = new Funcionario("Teste 5", setor, 5000.0, "teste_5@gmail.com", 25);
-		
-		List<Funcionario> lstBefore = (List<Funcionario>) funcionarioService.funcionarioRead().getEntity();
-		
-		funcionarioService.funcionarioCreate(f1);
-		lstBefore.add(f1);
-		
-		funcionarioService.funcionarioCreate(f2);
-		lstBefore.add(f2);
-		
-		funcionarioService.funcionarioCreate(f3);
-		lstBefore.add(f3);
-		
-		funcionarioService.funcionarioCreate(f4);
-		lstBefore.add(f4);
-		
-		funcionarioService.funcionarioCreate(f5);
-		lstBefore.add(f5);
-		
-		List<Funcionario> lstAfter = (List<Funcionario>) funcionarioService.funcionarioRead().getEntity();
+		lstAfter = (List<FuncionarioDTO>) funcionarioService.funcionarioRead().getEntity();
 
 		Assertions.assertEquals(lstAfter.size(), lstBefore.size(), "A lista retornada difere da esperada");
+		Assertions.assertEquals(error, false, "Erro na inserção do funcionário");
 		
 	}
 	
@@ -150,7 +177,7 @@ class FuncionarioServiceTest {
 	void deveRetornarNotFoundAoAtualizarAlgoQueNaoExiste() {
 		Funcionario f1 = new Funcionario("Teste 1", null, 1000.0, "teste_1@gmail.com", 21);
 		f1.setId(9438234);
-		Assertions.assertEquals(funcionarioService.funcionarioUpdate(f1).getStatus(), Status.NOT_FOUND.getStatusCode());
+		Assertions.assertEquals(funcionarioService.funcionarioUpdate(new FuncionarioDTO(f1)).getStatus(), Status.NOT_FOUND.getStatusCode());
 	}
 	
 	/**
@@ -158,10 +185,10 @@ class FuncionarioServiceTest {
 	 */
 	@Test
 	void testFuncionarioCreate() {
-		Funcionario f1 = new Funcionario("Teste Unitario", null, 2000.0, "teste@gmail.com", 21);
+		Funcionario f1 = new Funcionario("Pamela", null, 2000.0, "teste@gmail.com", 21);
 		boolean inserido = false;
 		try {
-			funcionarioService.funcionarioCreate(f1);
+			funcionarioService.funcionarioCreate(new FuncionarioDTO(f1));
 			inserido = true;
 		} catch (Exception e) {
 			inserido = false;
@@ -171,9 +198,9 @@ class FuncionarioServiceTest {
 	
 	@Test
 	void testFuncionarioRead() {
-		Funcionario f1 = new Funcionario("Teste Unitario", null, 2000.0, "teste@gmail.com", 21);
-		funcionarioService.funcionarioCreate(f1);
-		List<Funcionario> lst = (List<Funcionario>) funcionarioService.funcionarioRead().getEntity();
+		Funcionario f1 = new Funcionario("Roberta Silva", null, 2000.0, "teste@gmail.com", 21);
+		funcionarioService.funcionarioCreate(new FuncionarioDTO(f1));
+		List<FuncionarioDTO> lst = (List<FuncionarioDTO>) funcionarioService.funcionarioRead().getEntity();
 		
 		Assertions.assertEquals(lst != null && lst.size() > 0, true, "Não foi retornado nenhum funcionário");
 	}
@@ -181,24 +208,36 @@ class FuncionarioServiceTest {
 	
 	@Test
 	void testFuncionarioUpdate() {
-		Funcionario f1 = new Funcionario("Teste Unitario", null, 2000.0, "teste@gmail.com", 21);
-		funcionarioService.funcionarioCreate(f1);
+		Funcionario f1 = new Funcionario("Marcia Cosssta", null, 2000.0, "teste@gmail.com", 21);
+		FuncionarioDTO f1_DTO = null;
+		boolean error = false;
+		try {
+			funcionarioDAO.save(f1);
+			
+			f1_DTO = new FuncionarioDTO(f1);
+			
+			f1_DTO.setNome("Marcia Costa");
+			funcionarioService.funcionarioUpdate(f1_DTO);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			error = true;
+		}
 		
-		f1.setNome("Teste Unitário Update");
-		funcionarioService.funcionarioUpdate(f1);
-		
-		f1 = (Funcionario) funcionarioService.funcionarioFindById(f1.getId()).getEntity();
-		Assertions.assertEquals(f1.getNome(), "Teste Unitário Update", "O funcionário não foi atualizado");
+		f1_DTO = (FuncionarioDTO) funcionarioService.funcionarioFindById(f1_DTO.getId()).getEntity();
+		Assertions.assertEquals(f1_DTO.getNome(), "Marcia Costa", "O funcionário não foi atualizado");
+		Assertions.assertEquals(error, false, "Erro na atualização");
 	}
 	
 	@Test
 	void testFuncionarioDelete() {
 		Funcionario f1 = new Funcionario("Teste Unitario", null, 2000.0, "teste@gmail.com", 21);
-		funcionarioService.funcionarioCreate(f1);
 		boolean error = false;
 		try {
+			funcionarioDAO.save(f1);
 			funcionarioService.FuncionarioDelete(f1.getId());
 		} catch (Exception e) {
+			e.printStackTrace();
 			error = true;
 		}
 		

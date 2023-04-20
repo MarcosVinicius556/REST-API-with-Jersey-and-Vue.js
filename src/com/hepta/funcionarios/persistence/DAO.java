@@ -3,14 +3,8 @@ package com.hepta.funcionarios.persistence;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.validation.ConstraintViolationException;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
-import org.hibernate.PersistentObjectException;
 
 import com.hepta.funcionarios.entity.BaseEntity;
-import com.hepta.funcionarios.persistence.exception.ObjectAlreadyAssociatedException;
 import com.hepta.funcionarios.persistence.exception.ObjectNotFoundException;
 import com.hepta.funcionarios.persistence.singleton.HibernateUtil;
 
@@ -95,11 +89,13 @@ public interface DAO<Entity extends BaseEntity> {
 	/**
 	 * @param Object id da entidade para busca
 	 * @throws ObjectNotFoundException se não encontrar a entidade
+	 * @return Entity entity
 	 */
 	public Entity findById(Object id) throws ObjectNotFoundException;
 	
 	/**
 	 * @throws Exception se ocorrer um erro durante a exclusão
+	 * @return List<Entity> Todas os registros da entidade no banco
 	 */
 	public List<Entity> getAll() throws Exception;
 	

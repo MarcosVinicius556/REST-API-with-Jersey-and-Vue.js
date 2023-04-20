@@ -42,11 +42,54 @@ public class Funcionario implements BaseEntity, Serializable {
 		return id;
 	}
 
-	@Override
-	public String getTableName() {
-		return Funcionario.class.getName();
-	}
+	/**
+	 * @apiNote Pattern Builder para facilitar na criação do objeto
+	 *
+	 */
+	public static class Builder {
+		private Integer id;
+		private String nome;
+		private Setor setor;
+		private Double salario;
+		private String email;
+		private Integer idade;
+		
+		public Funcionario build() {
+			return new Funcionario(this);
+		}
 
+		public Builder setId(Integer id) {
+			this.id = id;
+			return this;
+		}
+
+		public Builder setNome(String nome) {
+			this.nome = nome;
+			return this;
+		}
+
+		public Builder setSetor(Setor setor) {
+			this.setor = setor;
+			return this;
+		}
+
+		public Builder setSalario(Double salario) {
+			this.salario = salario;
+			return this;
+		}
+
+		public Builder setEmail(String email) {
+			this.email = email;
+			return this;
+		}
+
+		public Builder setIdade(Integer idade) {
+			this.idade = idade;
+			return this;
+		}
+		
+	}
+	
 	public Funcionario() {
 
 	}
@@ -57,6 +100,15 @@ public class Funcionario implements BaseEntity, Serializable {
 		this.salario = salario;
 		this.email = email;
 		this.idade = idade;
+	}
+	
+	public Funcionario(Builder builder) {
+		this.id = builder.id;
+		this.nome = builder.nome;
+		this.setor = builder.setor;
+		this.salario = builder.salario;
+		this.email = builder.email;
+		this.idade = builder.idade;
 	}
 
 	public void setId(Integer id) {
@@ -101,6 +153,11 @@ public class Funcionario implements BaseEntity, Serializable {
 
 	public void setIdade(Integer idade) {
 		this.idade = idade;
+	}
+	
+	@Override
+	public String getTableName() {
+		return Funcionario.class.getName();
 	}
 
 	@Override

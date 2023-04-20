@@ -2,6 +2,7 @@ package com.hepta.funcionarios.rest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -16,7 +17,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.hepta.funcionarios.entity.Setor;
+import com.hepta.funcionarios.dto.SetorDTO;
 import com.hepta.funcionarios.persistence.SetorDAO;
 import com.hepta.funcionarios.persistence.exception.ObjectNotFoundException;
 import com.hepta.funcionarios.persistence.factory.DAOFactory;
@@ -33,16 +34,16 @@ public class SetorService {
     /**
      * Adiciona novo Setor
      * 
-     * @param Setor: Novo Setor
+     * @param SetorDTO: Novo Setor
      * @return response 200 (OK) - Conseguiu adicionar
      */
     @Path("/salvar")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @POST
-    public Response setorCreate(Setor setor) {
+    public Response setorCreate(SetorDTO setor) {
         try {
-            dao.save(setor);
+            dao.save(setor.fromDTO());
         } catch (Exception e) {
             e.printStackTrace();
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao cadastrar o setor!").build();
@@ -52,7 +53,7 @@ public class SetorService {
     }
 
     /**
-     * Lista todos os Setor
+     * Lista todos os SetorDTO
      * 
      * @return response 200 (OK) - Conseguiu listar
      */
@@ -60,15 +61,17 @@ public class SetorService {
     @Produces(MediaType.APPLICATION_JSON)
     @GET
     public Response setorRead() {
-        List<Setor> setores = new ArrayList<>();
+        List<SetorDTO> setores = new ArrayList<>();
         try {
-            setores = dao.getAll();
+            setores = dao.getAll().stream()
+            					  .map(setor -> new SetorDTO(setor))
+            					  .collect(Collectors.toList());
         } catch (Exception e) {
             e.printStackTrace();
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao buscar Setores").build();
         }
 
-        GenericEntity<List<Setor>> entity = new GenericEntity<List<Setor>>(setores) {
+        GenericEntity<List<SetorDTO>> entity = new GenericEntity<List<SetorDTO>>(setores) {
         };
         return Response.status(Status.OK).entity(entity).build();
     }
@@ -83,9 +86,9 @@ public class SetorService {
     @Produces(MediaType.APPLICATION_JSON)
     @GET
     public Response setorFindById(@PathParam("id") Integer id) {
-    	Setor setor = null;
+    	SetorDTO setor = null;
         try {
-            setor = dao.findById(id);
+            setor = new SetorDTO(dao.findById(id)); 
         } catch (ObjectNotFoundException e) {
             e.printStackTrace();
             return Response.status(Status.NOT_FOUND).entity("Não foi encontrado um setor com este ID " + id).build();
@@ -94,7 +97,7 @@ public class SetorService {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao buscar Setor").build();
         }
 
-        GenericEntity<Setor> entity = new GenericEntity<Setor>(setor) {
+        GenericEntity<SetorDTO> entity = new GenericEntity<SetorDTO>(setor) {
         };
         return Response.status(Status.OK).entity(entity).build();
     }
@@ -102,7 +105,7 @@ public class SetorService {
     /**
      * Atualiza um Setor
      * 
-     * @param Setor: Setor atualizado
+     * @param SetorDTO: Setor atualizado
      * @return response 200 (OK) - Conseguiu atualizar
      * @return response 404 (NOT FOUND) - Não encontrou setor
      */
@@ -110,9 +113,9 @@ public class SetorService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @PUT
-    public Response setorUpdate(Setor setor) {
+    public Response setorUpdate(SetorDTO setor) {
     	  try {
-              dao.update(setor);
+              dao.update(setor.fromDTO());
           } catch (ObjectNotFoundException e) {
               e.printStackTrace();
               return Response.status(Status.NOT_FOUND).entity("Não foi encontrado um setor com este ID " + setor.getId()).build();
