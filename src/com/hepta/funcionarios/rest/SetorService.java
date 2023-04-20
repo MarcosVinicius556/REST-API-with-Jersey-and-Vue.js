@@ -17,8 +17,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.hepta.funcionarios.entity.Setor;
+import com.hepta.funcionarios.persistence.SetorDAO;
+import com.hepta.funcionarios.persistence.exception.ObjectNotFoundException;
 import com.hepta.funcionarios.persistence.factory.DAOFactory;
-import com.hepta.funcionarios.persistence.interfaces.SetorDAO;
 
 @Path("/setores")
 public class SetorService {
@@ -41,16 +42,17 @@ public class SetorService {
     @POST
     public Response setorCreate(Setor setor) {
         try {
-            dao.save(setor); //Criar retorno de erro personalizado!
+            dao.save(setor);
         } catch (Exception e) {
             e.printStackTrace();
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao cadastrar o setor!").build();
         }
 
         return Response.status(Status.OK).build();
     }
 
     /**
-     * Lista todos os Setores
+     * Lista todos os Setor
      * 
      * @return response 200 (OK) - Conseguiu listar
      */
@@ -63,76 +65,87 @@ public class SetorService {
             setores = dao.getAll();
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao buscar Funcionarios").build();
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao buscar Setores").build();
         }
 
         GenericEntity<List<Setor>> entity = new GenericEntity<List<Setor>>(setores) {
         };
         return Response.status(Status.OK).entity(entity).build();
     }
-
+    
     /**
      * Busca um setor pelo id
      * 
-     * @return response 200 (OK) - Conseguiu listar
+     * @return response 200 (OK) - encontrou
+     * @return response 404 (NOT_FOUND) - não encontrou
      */
     @Path("/buscar/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @GET
-    public Response funcionarioFindById(@PathParam("id") Integer id) {
+    public Response setorFindById(@PathParam("id") Integer id) {
     	Setor setor = null;
         try {
-            setor = dao.find(id);
+            setor = dao.findById(id);
+        } catch (ObjectNotFoundException e) {
+            e.printStackTrace();
+            return Response.status(Status.NOT_FOUND).entity("Não foi encontrado um setor com este ID " + id).build();
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao buscar o setor").build();
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao buscar Setor").build();
         }
 
         GenericEntity<Setor> entity = new GenericEntity<Setor>(setor) {
         };
         return Response.status(Status.OK).entity(entity).build();
     }
-    
+
     /**
      * Atualiza um Setor
      * 
-     * @param id:          id do Setor
      * @param Setor: Setor atualizado
      * @return response 200 (OK) - Conseguiu atualizar
+     * @return response 404 (NOT FOUND) - Não encontrou setor
      */
     @Path("/atualizar")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @PUT
     public Response setorUpdate(Setor setor) {
-    	try {
-            dao.update(setor);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao atualizar o setor!").build();
-        }
+    	  try {
+              dao.update(setor);
+          } catch (ObjectNotFoundException e) {
+              e.printStackTrace();
+              return Response.status(Status.NOT_FOUND).entity("Não foi encontrado um setor com este ID " + setor.getId()).build();
+          } catch (Exception e) {
+              e.printStackTrace();
+              return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao atualizar o setor!").build();
+          }
 
-        return Response.status(Status.OK).build();
+          return Response.status(Status.OK).build();
     }
 
     /**
      * Remove um Setor
      * 
-     * @param id: id do Setor
+     * @param id: id do setor
      * @return response 200 (OK) - Conseguiu remover
+     * @return response 404 (NOT FOUND) - Não encontrou setor
      */
     @Path("/deletar/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @DELETE
     public Response setorDelete(@PathParam("id") Integer id) {
-    	try {
-            dao.delete(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao remover o setor!").build();
-        }
+    	  try {
+              dao.delete(id);
+          } catch (ObjectNotFoundException e) {
+              e.printStackTrace();
+              return Response.status(Status.NOT_FOUND).entity("Erro ao remover o setor!").build();
+          } catch (Exception e) {
+        	  e.printStackTrace();
+    		  return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao remover o setor!" + e).build();
+          }
 
-        return Response.status(Status.OK).build();
+          return Response.status(Status.OK).build();
     }
 
     /**
@@ -144,7 +157,7 @@ public class SetorService {
     @Produces(MediaType.TEXT_PLAIN)
     @GET
     public String testeJersey() {
-        return "REST Setor funcionando.";
+        return "REST Setor uncionando.";
     }
 
 }

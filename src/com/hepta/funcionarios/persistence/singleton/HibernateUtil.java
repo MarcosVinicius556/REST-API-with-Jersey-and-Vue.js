@@ -1,4 +1,4 @@
-package com.hepta.funcionarios.persistence;
+package com.hepta.funcionarios.persistence.singleton;
 
 import java.util.Date;
 

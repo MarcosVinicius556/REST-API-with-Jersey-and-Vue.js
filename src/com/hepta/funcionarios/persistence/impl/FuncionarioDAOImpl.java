@@ -7,9 +7,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import com.hepta.funcionarios.entity.Funcionario;
-import com.hepta.funcionarios.persistence.HibernateUtil;
+import com.hepta.funcionarios.persistence.FuncionarioDAO;
 import com.hepta.funcionarios.persistence.exception.ObjectNotFoundException;
-import com.hepta.funcionarios.persistence.interfaces.FuncionarioDAO;
+import com.hepta.funcionarios.persistence.singleton.HibernateUtil;
 
 /**
  * 
@@ -20,70 +20,7 @@ import com.hepta.funcionarios.persistence.interfaces.FuncionarioDAO;
  */
 public class FuncionarioDAOImpl implements FuncionarioDAO {
 
-	public void save(Funcionario funcionario) throws Exception {
-		EntityManager em = HibernateUtil.getEntityManager();
-		try {
-			em.getTransaction().begin();
-			em.persist(funcionario);
-			em.getTransaction().commit();
-		} catch (Exception e) {
-			em.getTransaction().rollback();
-			throw new Exception(e);
-		} finally {
-			em.close();
-		}
-	}
-
-	public Funcionario update(Funcionario funcionario) throws Exception {
-		EntityManager em = HibernateUtil.getEntityManager();
-		Funcionario funcionarioAtualizado = null;
-		try {
-			funcionarioAtualizado = find(funcionario.getId());
-
-			em.getTransaction().begin();
-			updateFuncionario(funcionarioAtualizado, funcionario);
-			funcionarioAtualizado = em.merge(funcionarioAtualizado);
-			em.getTransaction().commit();
-			
-		} catch (ObjectNotFoundException e) {
-			em.getTransaction().rollback();
-			throw new ObjectNotFoundException("Não foi encontrado nenhum funcionário com este ID. " + funcionario.getId());
-		} catch (Exception e) {
-			em.getTransaction().rollback();
-			throw new Exception(e);
-		} finally {
-			em.close();
-		}
-		return funcionarioAtualizado;
-	}
-	
-	private void updateFuncionario(Funcionario newFuncionario, Funcionario funcionario) {
-		newFuncionario.setNome(funcionario.getNome());
-		newFuncionario.setSetor(funcionario.getSetor());
-		newFuncionario.setSalario(funcionario.getSalario());
-		newFuncionario.setEmail(funcionario.getEmail());
-		newFuncionario.setIdade(funcionario.getIdade());
-	}
-
-	public void delete(Integer id) throws Exception {
-		EntityManager em = HibernateUtil.getEntityManager();
-		try {
-			em.getTransaction().begin();
-			Funcionario funcionario = find(id);
-			em.remove(em.contains(funcionario) ? funcionario : em.merge(funcionario));
-			em.getTransaction().commit();
-		} catch (ObjectNotFoundException e) {
-			em.getTransaction().rollback();
-			throw new ObjectNotFoundException("Não foi encontrado nenhum funcionário com este ID");
-		} catch (Exception e) {
-			em.getTransaction().rollback();
-			throw new Exception("Ocorreu um erro ao deletar um funcionário. Motivo: " + e.getMessage());
-		} finally {
-			em.close();
-		}
-	}
-
-	public Funcionario find(Integer id) throws ObjectNotFoundException {
+	public Funcionario findById(Object id) throws ObjectNotFoundException {
 		EntityManager em = HibernateUtil.getEntityManager();
 		Funcionario funcionario = null;
 		try {
@@ -102,17 +39,17 @@ public class FuncionarioDAOImpl implements FuncionarioDAO {
 	@SuppressWarnings("unchecked")
 	public List<Funcionario> getAll() throws Exception {
 		EntityManager em = HibernateUtil.getEntityManager();
-		List<Funcionario> Funcionarios = new ArrayList<>();
+		List<Funcionario> funcionarios = new ArrayList<>();
 		try {
 			Query query = em.createQuery("FROM Funcionario f join fetch f.setor ");
-			Funcionarios = query.getResultList();
+			funcionarios = query.getResultList();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
 			throw new Exception(e);
 		} finally {
 			em.close();
 		}
-		return Funcionarios;
+		return funcionarios;
 	}
 	
 }

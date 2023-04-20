@@ -17,9 +17,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.hepta.funcionarios.entity.Funcionario;
+import com.hepta.funcionarios.persistence.FuncionarioDAO;
 import com.hepta.funcionarios.persistence.exception.ObjectNotFoundException;
 import com.hepta.funcionarios.persistence.factory.DAOFactory;
-import com.hepta.funcionarios.persistence.interfaces.FuncionarioDAO;
 
 @Path("/funcionarios")
 public class FuncionarioService {
@@ -77,6 +77,7 @@ public class FuncionarioService {
      * Busca um funcionário pelo id
      * 
      * @return response 200 (OK) - Conseguiu listar
+     * @return response 404 (NOT FOUND) - Não encontrou funcionário
      */
     @Path("/buscar/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -84,7 +85,7 @@ public class FuncionarioService {
     public Response funcionarioFindById(@PathParam("id") Integer id) {
     	Funcionario funcionario = null;
         try {
-            funcionario = dao.find(id);
+            funcionario = dao.findById(id);
         } catch (ObjectNotFoundException e) {
             e.printStackTrace();
             return Response.status(Status.NOT_FOUND).entity("Não foi encontrado um funcionário com este ID " + id).build();
@@ -101,9 +102,9 @@ public class FuncionarioService {
     /**
      * Atualiza um Funcionario
      * 
-     * @param id:          id do Funcionario
      * @param Funcionario: Funcionario atualizado
      * @return response 200 (OK) - Conseguiu atualizar
+     * @return response 404 (NOT FOUND) - Não encontrou funcionário
      */
     @Path("/atualizar")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -128,6 +129,7 @@ public class FuncionarioService {
      * 
      * @param id: id do funcionario
      * @return response 200 (OK) - Conseguiu remover
+     * @return response 404 (NOT FOUND) - Não encontrou funcionário
      */
     @Path("/deletar/{id}")
     @Produces(MediaType.APPLICATION_JSON)

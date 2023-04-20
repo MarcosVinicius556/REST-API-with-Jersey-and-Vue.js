@@ -13,7 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Funcionario implements Serializable {
+public class Funcionario implements BaseEntity, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -41,9 +41,14 @@ public class Funcionario implements Serializable {
 	public Integer getId() {
 		return id;
 	}
-	
+
+	@Override
+	public String getTableName() {
+		return Funcionario.class.getName();
+	}
+
 	public Funcionario() {
-		
+
 	}
 
 	public Funcionario(String nome, Setor setor, Double salario, String email, Integer idade) {
@@ -114,5 +119,5 @@ public class Funcionario implements Serializable {
 		Funcionario other = (Funcionario) obj;
 		return Objects.equals(id, other.id);
 	}
-	
+
 }

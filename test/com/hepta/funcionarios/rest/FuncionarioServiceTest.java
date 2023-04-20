@@ -12,8 +12,9 @@ import org.junit.jupiter.api.Test;
 
 import com.hepta.funcionarios.entity.Funcionario;
 import com.hepta.funcionarios.entity.Setor;
-import com.hepta.funcionarios.persistence.HibernateUtil;
+import com.hepta.funcionarios.persistence.singleton.HibernateUtil;
 
+@SuppressWarnings("unchecked")
 class FuncionarioServiceTest {
 
 	

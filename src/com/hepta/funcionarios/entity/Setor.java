@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Setor implements Serializable {
+public class Setor implements BaseEntity, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -23,9 +23,9 @@ public class Setor implements Serializable {
 	private String nome;
 
 	public Setor() {
-		
+
 	}
-	
+
 	public Setor(String nome) {
 		this.nome = nome;
 	}
@@ -47,6 +47,11 @@ public class Setor implements Serializable {
 	}
 
 	@Override
+	public String getTableName() {
+		return Setor.class.getName();
+	}
+
+	@Override
 	public int hashCode() {
 		return Objects.hash(id);
 	}
@@ -62,5 +67,5 @@ public class Setor implements Serializable {
 		Setor other = (Setor) obj;
 		return Objects.equals(id, other.id);
 	}
-	
+
 }

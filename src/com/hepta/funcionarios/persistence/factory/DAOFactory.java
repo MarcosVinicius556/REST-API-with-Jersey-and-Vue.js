@@ -1,9 +1,9 @@
 package com.hepta.funcionarios.persistence.factory;
 
+import com.hepta.funcionarios.persistence.FuncionarioDAO;
+import com.hepta.funcionarios.persistence.SetorDAO;
 import com.hepta.funcionarios.persistence.impl.FuncionarioDAOImpl;
 import com.hepta.funcionarios.persistence.impl.SetorDAOImpl;
-import com.hepta.funcionarios.persistence.interfaces.FuncionarioDAO;
-import com.hepta.funcionarios.persistence.interfaces.SetorDAO;
 
 
 /**

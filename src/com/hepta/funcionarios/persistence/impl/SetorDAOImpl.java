@@ -7,72 +7,29 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import com.hepta.funcionarios.entity.Setor;
-import com.hepta.funcionarios.persistence.HibernateUtil;
-import com.hepta.funcionarios.persistence.interfaces.SetorDAO;
+import com.hepta.funcionarios.persistence.SetorDAO;
+import com.hepta.funcionarios.persistence.exception.ObjectNotFoundException;
+import com.hepta.funcionarios.persistence.singleton.HibernateUtil;
 
 /**
  * 
  * @author marcos
- * @apiNote Implementações dos métodos 
+ * @apiNote Implementações dos métodos
  * 			definidos na interface DAO do objeto
  *
  */
 public class SetorDAOImpl implements SetorDAO {
 
-	public void save(Setor setor) throws Exception {
-		EntityManager em = HibernateUtil.getEntityManager();
-		try {
-			em.getTransaction().begin();
-			em.persist(setor);
-			em.getTransaction().commit();
-		} catch (Exception e) {
-			em.getTransaction().rollback();
-			throw new Exception(e);
-		} finally {
-			em.close();
-		}
-	}
-
-	public Setor update(Setor setor) throws Exception {
-		EntityManager em = HibernateUtil.getEntityManager();
-		Setor setorAtualizado = null;
-		try {
-			em.getTransaction().begin();
-			setorAtualizado = em.merge(setor);
-			em.getTransaction().commit();
-		} catch (Exception e) {
-			em.getTransaction().rollback();
-			throw new Exception(e);
-		} finally {
-			em.close();
-		}
-		return setorAtualizado;
-	}
-
-	public void delete(Integer id) throws Exception {
-		EntityManager em = HibernateUtil.getEntityManager();
-		try {
-			em.getTransaction().begin();
-			Setor setor = em.find(Setor.class, id);
-			em.remove(setor);
-			em.getTransaction().commit();
-		} catch (Exception e) {
-			em.getTransaction().rollback();
-			throw new Exception(e);
-		} finally {
-			em.close();
-		}
-
-	}
-
-	public Setor find(Integer id) throws Exception {
+	public Setor findById(Object id) throws ObjectNotFoundException {
 		EntityManager em = HibernateUtil.getEntityManager();
 		Setor setor = null;
 		try {
 			setor = em.find(Setor.class, id);
+			if(setor == null)
+				throw new ObjectNotFoundException("Setor não encontrado");
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			throw new Exception(e);
+			throw new ObjectNotFoundException("");
 		} finally {
 			em.close();
 		}
