@@ -65,6 +65,7 @@ public class SetorService {
         try {
             setores = dao.getAll().stream()
             					  .map(setor -> new SetorDTO(setor))
+            					  .sorted((setor1, setor2) -> setor1.getNome().compareTo(setor2.getNome()))
             					  .collect(Collectors.toList());
         } catch (Exception e) {
             e.printStackTrace();

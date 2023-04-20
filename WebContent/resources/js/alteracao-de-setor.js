@@ -48,8 +48,10 @@ var app = new Vue({
                 } else {
                     vm.openModal("Erro", "Não foi possível alterar o setor!");
                 }
+            }).catch(error => {
+                vm.openModal("Erro interno!", "Não foi possível alterar o funcionário");
+                console.log(error);
             });
-            // window.location.href = "../index.html";
         },
         /**
 		 * Controles do MODAL
@@ -65,6 +67,8 @@ var app = new Vue({
 			vm.showModal = false;
 			vm.modalTitle = '';
 			vm.msgModal = '';
+
+            window.location.href = '../pages/listar-setor.html';
 		}
     }
 });

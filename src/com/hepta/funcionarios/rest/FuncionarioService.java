@@ -65,6 +65,7 @@ public class FuncionarioService {
         try {
             funcionarios = dao.getAll().stream()
             						   .map(func -> new FuncionarioDTO(func))
+            						   .sorted((func1, func2) -> func1.getNome().compareTo(func2.getNome()))
             						   .collect(Collectors.toList());
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,7 +74,7 @@ public class FuncionarioService {
 
         GenericEntity<List<FuncionarioDTO>> entity = new GenericEntity<List<FuncionarioDTO>>(funcionarios) {
         };
-        return Response.status(Status.OK).entity(entity).build();
+        return Response.status(Status.OK).entity(entity).build(); 
     }
     
     /**

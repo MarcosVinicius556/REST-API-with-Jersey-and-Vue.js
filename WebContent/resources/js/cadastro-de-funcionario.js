@@ -56,6 +56,9 @@ var app = new Vue({
                 } else {
                     vm.openModal("Erro", "Não foi possível cadastrar o funcionário!");
                 }
+            }).catch(error => {
+                vm.openModal("Erro interno!", "Ocorreu um erro ao cadastrar o funcionário");
+                console.log(error);
             });
         },
         /**
@@ -67,13 +70,13 @@ var app = new Vue({
 			vm.msgModal = msg;
 			vm.showModal = true;
 		}, 
-		closeModal: function(redirect){
+		closeModal: function(){
 			const vm = this;
 			vm.showModal = false;
 			vm.modalTitle = '';
 			vm.msgModal = '';
-            if(redirect)
-                window.location.href = "../index.html"
+            
+            window.location.href = "../index.html"
 		}
     }
 });

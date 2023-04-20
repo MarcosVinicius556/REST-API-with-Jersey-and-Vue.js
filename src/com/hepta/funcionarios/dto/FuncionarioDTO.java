@@ -1,5 +1,7 @@
 package com.hepta.funcionarios.dto;
 
+import java.io.Serializable;
+
 import com.hepta.funcionarios.entity.Funcionario;
 import com.hepta.funcionarios.entity.Setor;
 
@@ -13,7 +15,8 @@ import com.hepta.funcionarios.entity.Setor;
  * 			rede
  *
  */
-public class FuncionarioDTO {
+public class FuncionarioDTO implements Serializable{
+	private static final long serialVersionUID = 1L;
 
 	private Integer id;
 	private String nome;
@@ -21,6 +24,10 @@ public class FuncionarioDTO {
 	private Double salario;
 	private String email;
 	private Integer idade;
+	
+	public FuncionarioDTO() {
+		
+	}
 	
 	public FuncionarioDTO(Funcionario funcionario) {
 		this.id = funcionario.getId();

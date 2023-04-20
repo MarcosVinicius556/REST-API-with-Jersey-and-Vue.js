@@ -78,6 +78,8 @@ var inicio = new Vue({
 			vm.showModal = false;
 			vm.modalTitle = '';
 			vm.msgModal = '';
+
+			window.location.href = 'index.html';
 		}
     }
 });

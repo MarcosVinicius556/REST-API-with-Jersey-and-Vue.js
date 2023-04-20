@@ -1,4 +1,5 @@
 const RETORNO_COM_SUCESSO = 200;
+const RETORNO_ERRO_INTERNO = 500;
 
 var inicio = new Vue({
 	el:"#setores",
@@ -37,11 +38,14 @@ var inicio = new Vue({
 						let status = response.status;
 						if(status == RETORNO_COM_SUCESSO){
 							vm.openModal('Atenção', 'setor removido com sucesso!');
+							// window.location.href = "listar-setor.html";
 						} else {
-							vm.openModal('Erro Interno', 'Não foi possível remover o setor selecionado!');
+							vm.openModal('Erro não catalogado', 'Não foi possível remover o setor selecionado!');
 						}
-					})
-			window.location.href = "listar-setor.html";
+				}).catch(error => {
+					vm.openModal('Erro interno', "Ocorreu um erro ao deletar o setor");
+					console.log(error);
+				});
 		},
 		/**
 		 * insert de um novo funcionário
@@ -71,6 +75,8 @@ var inicio = new Vue({
 			vm.showModal = false;
 			vm.modalTitle = '';
 			vm.msgModal = '';
+
+			window.location.href = '../pages/listar-setor.html';
 		}
     }
 });
