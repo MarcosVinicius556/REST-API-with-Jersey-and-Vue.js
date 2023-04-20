@@ -6,7 +6,8 @@ var inicio = new Vue({
         lista: [],
 		showModal: false,
 		modalTitle: '',
-		msgModal: ''
+		msgModal: '',
+		conteudoCarregado: false
     },
     created: function(){
         let vm =  this;
@@ -23,7 +24,8 @@ var inicio = new Vue({
 						vm.lista = response.data;
 				 }).catch(function (error) {
 						vm.openModal('Erro Interno', 'Não foi possível listar os itens. Motivo: ' + error);
-				 })
+				 });
+			vm.conteudoCarregado = true;
 		},
 		/**
 		 * Exclusão do funcionário
@@ -39,7 +41,7 @@ var inicio = new Vue({
 							vm.openModal('Erro Interno', 'Não foi possível remover o funcionário selecionado!');
 						}
 					})
-			window.location.href = "../index.html";
+			vm.listarFuncionarios();
 		},
 		/**
 		 * insert de um novo funcionário

@@ -30,7 +30,6 @@ var app = new Vue({
         vm.funcionario.id = urlSearchParams.get("id");
         vm.buscaSetores();
         vm.buscaFuncionario();
-        vm.conteudoCarregado = true;
     },
     methods:{
         buscaSetores: async function(){
@@ -42,6 +41,7 @@ var app = new Vue({
                  .catch(error => {
                     vm.openModal("Erro interno", error);  
                  });
+            vm.conteudoCarregado = true;
         },
         buscaFuncionario: function(){
             const vm = this;

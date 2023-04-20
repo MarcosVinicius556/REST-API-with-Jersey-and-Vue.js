@@ -6,7 +6,8 @@ var inicio = new Vue({
         lista: [],
 		showModal: false,
 		modalTitle: '',
-		msgModal: ''
+		msgModal: '',
+		conteudoCarregado: false
     },
     created: function(){
         let vm =  this;
@@ -24,6 +25,7 @@ var inicio = new Vue({
 				 }).catch(function (error) {
 						vm.openModal('Erro Interno', 'Não foi possível listar os itens. Motivo: ' + error);
 				 })
+			vm.conteudoCarregado = true;
 		},
 		/**
 		 * Exclusão do funcionário

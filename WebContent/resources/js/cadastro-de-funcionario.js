@@ -23,7 +23,6 @@ var app = new Vue({
     created: function(){
         let vm = this;
         vm.buscaSetores();
-        vm.conteudoCarregado = true;
     },
     methods:{
         buscaSetores: async function(){
@@ -34,6 +33,7 @@ var app = new Vue({
                  }).catch(error => {
                     vm.openModal("Erro interno", error);  
                  });
+            vm.conteudoCarregado = true;
         },
         cadastrarFuncionario: async function(e){
             e.preventDefault();

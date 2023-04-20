@@ -44,7 +44,7 @@
 				Final Componente modal
 			-->
 
-			<div class="container" v-if="conteudoCarregado">
+			<div class="container" > <!-- v-if="conteudoCarregado"> -->
 				<h4>Alteração de Funcionário</h4>
 
 				<form class="funcionario-form" @submit="alterarSetor">
@@ -62,9 +62,9 @@
 					
 				</form>	
 			</div>
-			<div class="d-flex justify-content-center" v-else>
-				<h1>Carregando...</h1>
-			</div>
+			<!-- <div class="d-flex justify-content-center" v-else>
+		  <h1>Carregando...</h1>
+		</div> -->
 		</div>
 	</main>
 

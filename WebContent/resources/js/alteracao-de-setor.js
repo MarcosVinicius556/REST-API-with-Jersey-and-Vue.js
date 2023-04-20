@@ -20,7 +20,6 @@ var app = new Vue({
         const urlSearchParams = new URLSearchParams(window.location.search);
         vm.setor.id = urlSearchParams.get("id");
         vm.buscaSetor();
-        vm.conteudoCarregado = true;
     },
     methods:{
         buscaSetor: function(){
@@ -32,6 +31,7 @@ var app = new Vue({
                  .catch(error => {
                     vm.openModal(error, "Erro ao buscar setor!");
                  });
+            vm.conteudoCarregado = true;
         },
         alterarSetor: async function(e){
             e.preventDefault();

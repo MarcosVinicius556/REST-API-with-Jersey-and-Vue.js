@@ -30,7 +30,7 @@ class FuncionarioServiceTest {
 	@AfterAll
 	static void setAfterTests() {
 		//Removendo tudo que foi inserido
-		boolean removeAll = false; //Passar para true quando quiser que remova todas os novos objetos após o teste
+		boolean removeAll = true; //Passar para true quando quiser que remova todas os novos objetos após o teste
 		
 		if(removeAll) {
 			EntityManager em = HibernateUtil.getEntityManager();
