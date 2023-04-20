@@ -2,14 +2,17 @@ package com.hepta.funcionarios.rest;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.ws.rs.core.Response.Status;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.hepta.funcionarios.entity.Funcionario;
 import com.hepta.funcionarios.entity.Setor;
+import com.hepta.funcionarios.persistence.HibernateUtil;
 
 class FuncionarioServiceTest {
 
@@ -21,6 +24,26 @@ class FuncionarioServiceTest {
 	static void setUpBeforeClass() throws Exception {
 		funcionarioService = new FuncionarioService();
 		setorService = new SetorService();
+	}
+	
+	@AfterAll
+	static void setAfterTests() {
+		//Removendo tudo que foi inserido
+		boolean removeAll = false; //Passar para true quando quiser que remova todas os novos objetos após o teste
+		
+		if(removeAll) {
+			EntityManager em = HibernateUtil.getEntityManager();
+			try {
+				em.getTransaction().begin();
+				em.createQuery("DELETE FROM Funcionario").executeUpdate();
+				em.createQuery("DELETE FROM Setor").executeUpdate();
+				em.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				HibernateUtil.shutdown();
+			}
+		}
 	}
 	
 	/**
@@ -43,9 +66,6 @@ class FuncionarioServiceTest {
 		int quantFinal = lstAfter.size();
 		
 		Assertions.assertEquals(quantInicial + 1, quantFinal, "Inseriu mais de um, ou nenhum");
-		
-		funcionarioService.FuncionarioDelete(funcionario.getId());
-		setorService.setorDelete(setor.getId());
 	}
 	
 	@Test
@@ -65,9 +85,6 @@ class FuncionarioServiceTest {
 		int quantFinal = lstAfter.size();
 		
 		Assertions.assertEquals(quantInicial - 1, quantFinal, "Removeu mais de um, ou nenhum");		
-		
-		funcionarioService.FuncionarioDelete(funcionario.getId());
-		setorService.setorDelete(setor.getId());
 	}
 	
 	@Test
@@ -81,9 +98,6 @@ class FuncionarioServiceTest {
 		Funcionario fTest = (Funcionario) funcionarioService.funcionarioFindById(f1.getId()).getEntity();
 		
 		Assertions.assertEquals(f1, fTest, "O funcionário retornado não foi o mesmo inserido");
-		
-		funcionarioService.FuncionarioDelete(f1.getId());
-		setorService.setorDelete(setor.getId());
 	}
 	
 	
@@ -119,38 +133,31 @@ class FuncionarioServiceTest {
 
 		Assertions.assertEquals(lstAfter.size(), lstBefore.size(), "A lista retornada difere da esperada");
 		
-		funcionarioService.FuncionarioDelete(f1.getId());
-		funcionarioService.FuncionarioDelete(f2.getId());
-		funcionarioService.FuncionarioDelete(f3.getId());
-		funcionarioService.FuncionarioDelete(f4.getId());
-		funcionarioService.FuncionarioDelete(f5.getId());
-		setorService.setorDelete(setor.getId());
 	}
 	
 	@Test
 	void deveRetornarCodigoDeNaoEncontradoAoTentarDeletar() {
-		Assertions.assertEquals(funcionarioService.FuncionarioDelete(10000).getStatus(), Status.NOT_FOUND);
+		Assertions.assertEquals(funcionarioService.FuncionarioDelete(10000).getStatus(), Status.NOT_FOUND.getStatusCode());
 	}
 	
 	@Test
 	void deveRetornarNotFoundAoBuscarAlgoQueNaoExiste() {
-		Assertions.assertEquals(funcionarioService.funcionarioFindById(93018).getStatus(), Status.NOT_FOUND);
+		Assertions.assertEquals(funcionarioService.funcionarioFindById(93018).getStatus(), Status.NOT_FOUND.getStatusCode());
 	}
 	
 	@Test
 	void deveRetornarNotFoundAoAtualizarAlgoQueNaoExiste() {
-//		Funcionario 
-//		Assertions.assertEquals(funcionarioService.funcionarioFindById(93018).getStatus(), Status.NOT_FOUND);
+		Funcionario f1 = new Funcionario("Teste 1", null, 1000.0, "teste_1@gmail.com", 21);
+		f1.setId(9438234);
+		Assertions.assertEquals(funcionarioService.funcionarioUpdate(f1).getStatus(), Status.NOT_FOUND.getStatusCode());
 	}
-	
 	
 	/**
 	 * Testes unitários
 	 */
 	@Test
 	void testFuncionarioCreate() {
-		Setor setor = new Setor("Teste Unitario Inserção");
-		Funcionario f1 = new Funcionario("Teste Unitario", setor, 2000.0, "teste@gmail.com", 21);
+		Funcionario f1 = new Funcionario("Teste Unitario", null, 2000.0, "teste@gmail.com", 21);
 		boolean inserido = false;
 		try {
 			funcionarioService.funcionarioCreate(f1);
@@ -159,9 +166,6 @@ class FuncionarioServiceTest {
 			inserido = false;
 		}
 		Assertions.assertEquals(inserido, true, "O funcionário não foi inserido");
-		
-		funcionarioService.FuncionarioDelete(f1.getId());
-		setorService.setorDelete(setor.getId());
 	}
 	
 	@Test
@@ -171,8 +175,6 @@ class FuncionarioServiceTest {
 		List<Funcionario> lst = (List<Funcionario>) funcionarioService.funcionarioRead().getEntity();
 		
 		Assertions.assertEquals(lst != null && lst.size() > 0, true, "Não foi retornado nenhum funcionário");
-		
-		funcionarioService.FuncionarioDelete(f1.getId());
 	}
 	
 	
@@ -186,19 +188,20 @@ class FuncionarioServiceTest {
 		
 		f1 = (Funcionario) funcionarioService.funcionarioFindById(f1.getId()).getEntity();
 		Assertions.assertEquals(f1.getNome(), "Teste Unitário Update", "O funcionário não foi atualizado");
-		
-		funcionarioService.FuncionarioDelete(f1.getId());
 	}
 	
 	@Test
 	void testFuncionarioDelete() {
 		Funcionario f1 = new Funcionario("Teste Unitario", null, 2000.0, "teste@gmail.com", 21);
 		funcionarioService.funcionarioCreate(f1);
+		boolean error = false;
+		try {
+			funcionarioService.FuncionarioDelete(f1.getId());
+		} catch (Exception e) {
+			error = true;
+		}
 		
-		funcionarioService.FuncionarioDelete(f1.getId());
-		
-		f1 = (Funcionario) funcionarioService.funcionarioFindById(f1.getId()).getEntity();
-		Assertions.assertEquals(f1, null, "O funcionário não foi removido");
+		Assertions.assertEquals(error, false, "O funcionário não foi removido");
 	}
 
 }

@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.hepta.funcionarios.entity.Funcionario;
+import com.hepta.funcionarios.persistence.exception.ObjectNotFoundException;
 import com.hepta.funcionarios.persistence.factory.DAOFactory;
 import com.hepta.funcionarios.persistence.interfaces.FuncionarioDAO;
 
@@ -84,6 +85,9 @@ public class FuncionarioService {
     	Funcionario funcionario = null;
         try {
             funcionario = dao.find(id);
+        } catch (ObjectNotFoundException e) {
+            e.printStackTrace();
+            return Response.status(Status.NOT_FOUND).entity("Não foi encontrado um funcionário com este ID " + id).build();
         } catch (Exception e) {
             e.printStackTrace();
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao buscar Funcionarios").build();
@@ -108,6 +112,9 @@ public class FuncionarioService {
     public Response funcionarioUpdate(Funcionario funcionario) {
     	  try {
               dao.update(funcionario);
+          } catch (ObjectNotFoundException e) {
+              e.printStackTrace();
+              return Response.status(Status.NOT_FOUND).entity("Não foi encontrado um funcionário com este ID " + funcionario.getId()).build();
           } catch (Exception e) {
               e.printStackTrace();
               return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao atualizar o funcionário!").build();
@@ -128,6 +135,9 @@ public class FuncionarioService {
     public Response FuncionarioDelete(@PathParam("id") Integer id) {
     	  try {
               dao.delete(id);
+          } catch (ObjectNotFoundException e) {
+              e.printStackTrace();
+              return Response.status(Status.NOT_FOUND).entity("Erro ao remover o funcionário!").build();
           } catch (Exception e) {
               e.printStackTrace();
               return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao remover o funcionário!").build();

@@ -38,11 +38,16 @@ public class FuncionarioDAOImpl implements FuncionarioDAO {
 		EntityManager em = HibernateUtil.getEntityManager();
 		Funcionario funcionarioAtualizado = null;
 		try {
-			em.getTransaction().begin();
 			funcionarioAtualizado = find(funcionario.getId());
+
+			em.getTransaction().begin();
 			updateFuncionario(funcionarioAtualizado, funcionario);
 			funcionarioAtualizado = em.merge(funcionarioAtualizado);
 			em.getTransaction().commit();
+			
+		} catch (ObjectNotFoundException e) {
+			em.getTransaction().rollback();
+			throw new ObjectNotFoundException("Não foi encontrado nenhum funcionário com este ID. " + funcionario.getId());
 		} catch (Exception e) {
 			em.getTransaction().rollback();
 			throw new Exception(e);
@@ -64,10 +69,8 @@ public class FuncionarioDAOImpl implements FuncionarioDAO {
 		EntityManager em = HibernateUtil.getEntityManager();
 		try {
 			em.getTransaction().begin();
-			Funcionario funcionario = em.find(Funcionario.class, id);
-			if(funcionario == null)
-				throw new ObjectNotFoundException("Funcionário não encontrado com o ID " + id);
-			em.remove(funcionario);
+			Funcionario funcionario = find(id);
+			em.remove(em.contains(funcionario) ? funcionario : em.merge(funcionario));
 			em.getTransaction().commit();
 		} catch (ObjectNotFoundException e) {
 			em.getTransaction().rollback();
@@ -82,16 +85,18 @@ public class FuncionarioDAOImpl implements FuncionarioDAO {
 
 	public Funcionario find(Integer id) throws ObjectNotFoundException {
 		EntityManager em = HibernateUtil.getEntityManager();
-		Funcionario Funcionario = null;
+		Funcionario funcionario = null;
 		try {
-			Funcionario = em.find(Funcionario.class, id);
+			funcionario = em.find(Funcionario.class, id);
+			if(funcionario == null)
+				throw new ObjectNotFoundException("Funcionário não encontrado");
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			throw new ObjectNotFoundException("Não foi encontrado nenhum funcionário com este ID");
+			throw new ObjectNotFoundException("");
 		} finally {
 			em.close();
 		}
-		return Funcionario;
+		return funcionario;
 	}
 
 	@SuppressWarnings("unchecked")

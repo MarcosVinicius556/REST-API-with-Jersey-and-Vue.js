@@ -26,7 +26,7 @@ public class SetorService {
     private SetorDAO dao;
 
     public SetorService() {
-        dao = DAOFactory.createSetorDAOImpl();
+        dao = DAOFactory.createSetorDAO();
     }
 
     /**

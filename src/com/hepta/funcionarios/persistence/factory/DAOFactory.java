@@ -21,7 +21,7 @@ public class DAOFactory {
 		return new FuncionarioDAOImpl();
 	}
 	
-	public static SetorDAO createSetorDAOImpl() {
+	public static SetorDAO createSetorDAO() {
 		return new SetorDAOImpl();
 	}
 	
