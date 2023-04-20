@@ -57,7 +57,6 @@ var app = new Vue({
                     vm.openModal("Erro", "Não foi possível cadastrar o funcionário!");
                 }
             });
-            // window.location.href = "../index.html";
         },
         /**
 		 * Controles do MODAL
@@ -68,11 +67,13 @@ var app = new Vue({
 			vm.msgModal = msg;
 			vm.showModal = true;
 		}, 
-		closeModal: function(){
+		closeModal: function(redirect){
 			const vm = this;
 			vm.showModal = false;
 			vm.modalTitle = '';
 			vm.msgModal = '';
+            if(redirect)
+                window.location.href = "../index.html"
 		}
     }
 });

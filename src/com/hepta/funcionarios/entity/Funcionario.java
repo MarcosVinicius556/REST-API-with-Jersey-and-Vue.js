@@ -1,6 +1,7 @@
 package com.hepta.funcionarios.entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,6 +40,18 @@ public class Funcionario implements Serializable {
 
 	public Integer getId() {
 		return id;
+	}
+	
+	public Funcionario() {
+		
+	}
+
+	public Funcionario(String nome, Setor setor, Double salario, String email, Integer idade) {
+		this.nome = nome;
+		this.setor = setor;
+		this.salario = salario;
+		this.email = email;
+		this.idade = idade;
 	}
 
 	public void setId(Integer id) {
@@ -85,4 +98,21 @@ public class Funcionario implements Serializable {
 		this.idade = idade;
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Funcionario other = (Funcionario) obj;
+		return Objects.equals(id, other.id);
+	}
+	
 }
