@@ -1,22 +1,19 @@
-# Sobre o projeto
-Sistema de cadastro de funcionários e setores, desenvolvido com Java e Jersey para a construção da API RESTful que ficará responsável por atender as requisições. Nele foram utilizados alguns patterns como o Builder para facilitar a construção de objetos grandes, Factory para poder utilizar da inversão de dependência e facilitar a criação de objetos com compotamentos similares, como é o caso dos 'DAO' desenvolvidos e DTO para ter uma maior flexibilidade e segurança na hora de trafegar os dados. Já o front-end foi desenvolvido com html, css e js, porém utilizando de algumas diretivas de Vue.js e bootstrap para facilitar a construção da interface, para as requisições foi utilizado a API axios.
-
 # Sobre as requisições
 O sistema é capaz de realizar a busca, inserção, alteração e exclusão tanto de funcionários quanto setores, abaixo segue as rotas disponíveis:
 
-* **Funcionários**
-    *Salvar - http://localhost:8080/funcionarios/rest/funcionarios/salvar
-    *Buscar pelo ID - http://localhost:8080/funcionarios/rest/funcionarios/buscar/{id}
-    *Listar Todos - http://localhost:8080/funcionarios/rest/funcionarios/atualizar
-    *Deletar - http://localhost:8080/funcionarios/rest/funcionarios/deletar/{id}
-    *Teste - http://localhost:8080/funcionarios/rest/funcionarios/teste
+* Funcionários
+    * Salvar - http://localhost:8080/funcionarios/rest/funcionarios/salvar
+    * Buscar pelo ID - http://localhost:8080/funcionarios/rest/funcionarios/buscar/{id}
+    * Listar Todos - http://localhost:8080/funcionarios/rest/funcionarios/atualizar
+    * Deletar - http://localhost:8080/funcionarios/rest/funcionarios/deletar/{id}
+    * Teste - http://localhost:8080/funcionarios/rest/funcionarios/teste
 
-* **Setores**
-    *Salvar - http://localhost:8080/funcionarios/rest/setores/salvar
-    *Buscar pelo ID - http://localhost:8080/funcionarios/rest/setores/buscar/{id}
-    *Listar Todos - http://localhost:8080/funcionarios/rest/setores/atualizar
-    *Deletar - http://localhost:8080/funcionarios/rest/setores/deletar/{id}
-    *Teste - http://localhost:8080/funcionarios/rest/setores/teste
+* Setores
+    * Salvar - http://localhost:8080/funcionarios/rest/setores/salvar
+    * Buscar pelo ID - http://localhost:8080/funcionarios/rest/setores/buscar/{id}
+    * Listar Todos - http://localhost:8080/funcionarios/rest/setores/atualizar
+    * Deletar - http://localhost:8080/funcionarios/rest/setores/deletar/{id}
+    * Teste - http://localhost:8080/funcionarios/rest/setores/teste
 
 
 * Para exemplos de requisições verificar o arquivo *Testes Processo - Seletivo (HEPTA).postman_collection*.
