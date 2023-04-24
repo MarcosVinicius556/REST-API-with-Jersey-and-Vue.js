@@ -31,7 +31,7 @@ O sistema é capaz de realizar a busca, inserção, alteração e exclusão tant
 
 * Para testar aplicação acessar o serviço: http://localhost:8080/funcionarios/rest/funcionarios/teste
 
-* Para os testes unitários basta apenas rodar o projeto como um TestCase de JUnit
+* Para os testes unitários e de integração basta apenas rodar o projeto como um TestCase de JUnit
 
 # Tecnologias utilizadas
 
