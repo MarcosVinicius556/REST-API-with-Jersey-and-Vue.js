@@ -25,9 +25,9 @@ O sistema é capaz de realizar a busca, inserção, alteração e exclusão tant
 * Para rodar o projeto será necessário as seguintes ferramentas.
     * 1. Tomcat 9
     * 2. Jdk 8
-    * 3. MySql*
+    * 3. MySql
 
-* Para a instalação do banco basta apenas executar o script *SQL_CRIACAO_DATABASE.sql
+* Para a criação do banco basta apenas executar o script **SQL_CRIACAO_DATABASE.sql**
 
 * Para testar aplicação acessar o serviço: http://localhost:8080/funcionarios/rest/funcionarios/teste
 
