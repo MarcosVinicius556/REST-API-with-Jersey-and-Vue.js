@@ -18,7 +18,7 @@ O sistema é capaz de realizar a busca, inserção, alteração e exclusão tant
 
 * Para exemplos de requisições verificar o arquivo *Testes Processo - Seletivo (HEPTA).postman_collection*.
 
-** PS: a porta pode variar de acordo com a instalação do TOMCAT **
+**PS: a porta pode variar de acordo com a instalação do TOMCAT**
 
 # Como subir o projeto e os testes?
 
